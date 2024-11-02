@@ -1,0 +1,4 @@
+<template>
+    <CafeHeader/>
+    <Footer/>
+</template>
