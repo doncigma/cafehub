@@ -18,13 +18,7 @@
         <!-- Sign Up button -->
         <div>
             <UButton>Sign Up</UButton>
-        </div>
-
-        <div>
-            <span>
-                If you already have a registered account You can 
-                <NuxtLink to="/signup">Login here</NuxtLink>!
-            </span>
+            <span>If you already have a registered account You can <NuxtLink to="/signup">Login here</NuxtLink>!</span>
         </div>
     </div>
     

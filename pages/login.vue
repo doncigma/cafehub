@@ -19,7 +19,7 @@
         </div>
 
         <div>
-            <span>Not a member? <NuxtLink to="/signup">Sign up</NuxtLink></span>
+            <span>Not a member? <NuxtLink to="/signup">Sign up now</NuxtLink></span>
         </div>
     </div>
     

@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import { NuxtImg, NuxtLink } from '#build/components';
-</script>
-
 <template>
     <header class="bg-primary">
         <!-- Whole header -->
