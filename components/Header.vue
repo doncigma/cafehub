@@ -3,7 +3,7 @@ import { NuxtImg, NuxtLink } from '#build/components';
 </script>
 
 <template>
-    <header class="bg-cafebrown">
+    <header class="bg-primary">
         <!-- Whole header -->
         <div class="container mx-auto flex flex-row">
             <!-- Home link -->
