@@ -22,8 +22,8 @@
 
         <div>
             <span>
-                If you already have a registered account
-                <NuxtLink to="/signup">You can Login here</NuxtLink>!
+                If you already have a registered account You can 
+                <NuxtLink to="/signup">Login here</NuxtLink>!
             </span>
         </div>
     </div>
