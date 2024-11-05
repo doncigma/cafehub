@@ -1,4 +1,5 @@
 import { _primary } from '#tailwind-config/theme/accentColor';
+import Default from './layouts/default.vue';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -15,4 +16,3 @@ export default {
   },
   plugins: [],
 }
-
