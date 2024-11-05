@@ -1,4 +1,5 @@
 <template>
-    <CafeHeader/>
-    <Footer/>
+    <Header />
+    <slot />
+    <Footer />
 </template>
