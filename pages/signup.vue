@@ -2,24 +2,29 @@
     <div>
         <!-- Login -->
         <div>
-            <span class="text-lg md:text-xl">Login</span>
+            <span class="text-lg md:text-xl">Sign-up</span>
         </div>
         
-        <!-- Email and Password -->
+        <!-- Sign-up info -->
         <div>
             <div>
+                <UTextarea :rows="1" placeholder="Name" model-value=""/>
                 <UTextarea :rows="1" placeholder="Email" model-value=""/>
                 <UTextarea :rows="1" placeholder="Password" model-value=""/>
+                <UTextarea :rows="1" placeholder="Confirm Password" model-value=""/>
             </div>
         </div>
         
-        <!-- Login button -->
+        <!-- Sign Up button -->
         <div>
-            <UButton>Login</UButton>
+            <UButton>Sign Up</UButton>
         </div>
 
         <div>
-            <span>Not a member?<NuxtLink to="/signup">Sign up</NuxtLink></span>
+            <span>
+                If you already have a registered account
+                <NuxtLink to="/signup">You can Login here</NuxtLink>!
+            </span>
         </div>
     </div>
     
