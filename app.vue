@@ -1,7 +1,7 @@
 <template>
-    <div class="bg-primary">
+    <!-- <div class="bg-[url('public/bean-background.png')]"> -->
         <NuxtLayout>
             <NuxtPage />
         </NuxtLayout>
-    </div>
+    <!-- </div> -->
 </template>
