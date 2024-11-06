@@ -2,7 +2,7 @@
     <div>
         <!-- Logo -->
         <div>
-            <NuxtImg src="public/logos/CafeHub logo trans.png" />
+            <NuxtImg :src="$config.public.transLogoSrc" />
         </div>
 
         <!-- Blurb -->
@@ -12,8 +12,8 @@
 
         <!-- Login button -->
         <div>
-            <UButton color="primary" to="/signup">Sign Up</UButton>
-            <UButton color="primary" to="/login">Login</UButton>
+            <UButton color="accent" to="/signup">Sign Up</UButton>
+            <UButton color="prime" to="/login">Login</UButton>
         </div>
 
         <div>

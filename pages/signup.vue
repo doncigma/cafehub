@@ -25,7 +25,7 @@
     <!-- Logo footer -->
     <footer>        
         <div>
-            <NuxtImg src="public/logos/CafeHub logo trans.png"/>
+            <NuxtImg :src="$config.public.transLogoSrc"/>
         </div>
     </footer>
 </template>
