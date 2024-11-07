@@ -1,7 +1,10 @@
-// app.config.ts
 export default defineAppConfig({
+    modules: ['@nuxt/ui', '@nuxt/image'],    
     ui: {
-        primary: 'coffee-500',
-        gray: 'coffee-950',
+        button: {
+
+        },
+        primary: 'green',
+        gray: 'cool',
     },
 });
