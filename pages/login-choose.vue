@@ -11,9 +11,9 @@
         </div>
 
         <!-- Login button -->
-        <div>
-            <UButton color="accent" to="/signup">Sign Up</UButton>
-            <UButton color="prime" to="/login">Login</UButton>
+        <div class="flex justify-center">
+            <UButton color="coffee-500" to="/signup">Sign Up</UButton>
+            <UButton color="coffee-950" to="/login">Login</UButton>
         </div>
 
         <div>

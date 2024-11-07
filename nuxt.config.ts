@@ -7,6 +7,6 @@ export default defineNuxtConfig({
     public: {
       transLogoSrc: 'logos/CafeHub-logo-trans.png',
       noTextLogoSrc: 'logos/CafeHub-no-text.png'
-    }
-  }
+    },
+  },
 })
