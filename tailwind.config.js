@@ -3,15 +3,7 @@
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    './components/**/*.{vue,js,ts}',
-    './layouts/**/*.vue',
-    './pages/**/*.vue',
-    './plugins/**/*.{js,ts}',
-    './nuxt.config.{js,ts}',
-    './app.config.{js,ts}',
-    './app.vue',
-  ],
+  content: [],
   theme: {
     extend: {
       colors: {
@@ -28,9 +20,23 @@ export default {
           '900': '#503733',
           '950': '#2d1d1b',
         },
-        // prime(500): '#9f7659',
-        // darker(950): '#3f1c04',
-        // lighter(50): '#fff5e9',
+        coffeewarm: {
+          '50': '#f9f6ed',
+          '100': '#efe7d2',
+          '200': '#e1cfa7',
+          '300': '#d0af74',
+          '400': '#c1944e',
+          '500': '#b28040',
+          '600': '#996635', // caramel browns ^
+          '700': '#7f4f2f', // deeper browns v
+          '800': '#67402c',
+          '900': '#59372a',
+          '950': '#3f1c04',
+        },
+        mocha: '#9f7659',
+        caramel: '#80512f',
+        darkcaramel: '#3f1c04',
+        cream: '#e5d0c2',
       },
     },
   },

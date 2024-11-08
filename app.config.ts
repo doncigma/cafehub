@@ -1,7 +1,6 @@
-export default defineAppConfig({   
-    modules: ['@nuxt/ui', '@nuxt/image', '@nuxtjs/tailwindcss'],
+export default defineAppConfig({
     ui: {
-        primary: 'coffee-950',
-        gray: '#9f7659',
+        // primary: 'green',
+        // gray: 'cool',
     },
 });
