@@ -11,7 +11,7 @@
         </div>
 
         <!-- Login button -->
-        <div class="flex justify-center bg-coffee-500">
+        <div class="flex justify-center bg-white">
             <UButton to="/signup">Sign Up</UButton>
             <UButton to="/login">Login</UButton>
         </div>
