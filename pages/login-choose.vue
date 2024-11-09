@@ -1,23 +1,20 @@
+<script setup lang="ts">
+definePageMeta({
+  layout: 'login'
+});
+</script>
+
 <template>
-    <div>
-        <!-- Logo -->
-        <div>
-            <NuxtImg src="public/logos/CafeHub logo trans.png" />
-        </div>
-
+    <div class="flex flex-col">
         <!-- Blurb -->
-        <div>
-            <span class="text-lg md:text-xl">Find the best Cafe, reviewed by fellow coffee enthusiasts!</span>
-        </div>
-
+        <div class="flex justify-center text-coffee-100 text-lg md:text-xl">Find the best Cafe, reviewed by fellow coffee enthusiasts!</div>
+        
         <!-- Login button -->
-        <div>
-            <UButton color="primary" to="/signup">Sign Up</UButton>
-            <UButton color="primary" to="/login">Login</UButton>
-        </div>
-
-        <div>
-            <span>Not a member? <NuxtLink to="/signup">Sign up now</NuxtLink></span>
+        <div class="flex flex-col items-center justify-center space-y-1">
+            <UButtonGroup size="xl" orientation="vertical" class="w-44 md:w-72 space-y-2">
+                <UButton color="" class="bg-coffee-950" to="/signup">Sign Up</UButton>
+                <UButton color="" class="bg-coffeewarm-700" to="/login">Login</UButton>
+            </UButtonGroup>
         </div>
     </div>
 </template>

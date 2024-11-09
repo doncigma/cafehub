@@ -1,3 +1,9 @@
+<script setup lang="ts">
+definePageMeta({
+  layout: 'login'
+});
+</script>
+
 <template>
     <div>
         <!-- Login -->
@@ -15,18 +21,9 @@
         
         <!-- Login button -->
         <div>
-            <UButton>Login</UButton>
+            <UButton color="" class="bg-coffee-800" to="/login">Login</UButton>
         </div>
 
-        <div>
-            <span>Not a member? <NuxtLink to="/signup">Sign up now</NuxtLink></span>
-        </div>
+        <div class="flex justify-center">Not a member?&ThinSpace;<NuxtLink to="/signup" class="text-coffeewarm-950 font-bold hover:underline">Sign up,</NuxtLink>&ThinSpace;now!</div>
     </div>
-    
-    <!-- Logo footer -->
-    <footer>        
-        <div>
-            <NuxtImg src="public/logos/CafeHub logo trans.png"/>
-        </div>
-    </footer>
 </template>

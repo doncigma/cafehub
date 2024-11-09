@@ -1,31 +1,31 @@
+<script setup lang="ts">
+definePageMeta({
+  layout: 'login'
+});
+</script>
+
 <template>
-    <div>
+    <div class="flex flex-col">
         <!-- Login -->
         <div>
-            <span class="text-lg md:text-xl">Sign-up</span>
+            <span class="text-lg md:text-xl font-bold text-darkcaramel">Sign-up</span>
         </div>
         
         <!-- Sign-up info -->
         <div>
             <div>
-                <UTextarea :rows="1" placeholder="Name" model-value=""/>
-                <UTextarea :rows="1" placeholder="Email" model-value=""/>
-                <UTextarea :rows="1" placeholder="Password" model-value=""/>
-                <UTextarea :rows="1" placeholder="Confirm Password" model-value=""/>
+                <UTextarea color="" class="bg-caramel" :rows="1" placeholder="Name" model-value=""/>
+                <UTextarea color="" class="bg-caramel" :rows="1" placeholder="Email" model-value=""/>
+                <UTextarea color="" class="bg-caramel" :rows="1" placeholder="Password" model-value=""/>
+                <UTextarea color="" class="bg-caramel" :rows="1" placeholder="Confirm Password" model-value=""/>
             </div>
         </div>
         
         <!-- Sign Up button -->
         <div>
-            <UButton>Sign Up</UButton>
-            <span>If you already have a registered account You can <NuxtLink to="/signup">Login here</NuxtLink>!</span>
+            <UButton color="" class="bg-darkcaramel" to="/signup">Sign Up</UButton>
         </div>
+        
+        <div>If you already have a registered account You can <NuxtLink to="/login" class="text-coffeewarm-950 font-bold hover:underline">login </NuxtLink>here!</div>
     </div>
-    
-    <!-- Logo footer -->
-    <footer>        
-        <div>
-            <NuxtImg src="public/logos/CafeHub logo trans.png"/>
-        </div>
-    </footer>
 </template>

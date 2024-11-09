@@ -1,7 +1,7 @@
 <template>
-    <!-- <div class="bg-[url('public/bean-background.png')]"> -->
+    <div class="bg-mocha min-h-screen">
         <NuxtLayout>
             <NuxtPage />
         </NuxtLayout>
-    <!-- </div> -->
+    </div>
 </template>
