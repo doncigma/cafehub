@@ -4,7 +4,7 @@ export default {
 };
 
 definePageMeta({
-  layout: 'login'
+  layout: 'dashboard'
 });
 </script>
 
