@@ -1,5 +1,5 @@
 <template>
     <BareHeader />
     <slot />
-    <BareFooter />
+    <NavFooter />
 </template>
