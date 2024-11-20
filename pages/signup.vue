@@ -1,5 +1,5 @@
 <script>
-import { apiCaller } from '~/utils/apiHandler';
+import { SignUp } from '~/utils/apiHandler';
 
 export default {
     data() {
