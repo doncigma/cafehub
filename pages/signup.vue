@@ -1,6 +1,23 @@
 <script>
+import { apiCaller } from '~/utils/apiHandler';
+
+export default {
+    data() {
+        return {
+            searchQuery: ""
+        };
+    },
+    methods: {
+        handleSearch() {
+            if (this.searchQuery.trim()) {
+                apiCaller(this.searchQuery);
+            }
+        }
+    }
+}
+
 definePageMeta({
-  layout: 'login'
+    layout: 'login'
 });
 </script>
 

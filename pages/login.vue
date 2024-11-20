@@ -1,4 +1,20 @@
 <script>
+import { Login } from '~/utils/apiHandler.js';
+
+export default {
+    data() {
+        return {
+            userEmail: "",
+            userPassword: ""
+        };
+    },
+    methods: {
+        CheckLogin() {
+            Login(this.userEmail, this.userPassword);
+        }
+    }
+}
+
 definePageMeta({
   layout: 'login'
 });
@@ -14,8 +30,8 @@ definePageMeta({
         <!-- Email and Password -->
         <div>
             <div>
-                <UTextarea :rows="1" placeholder="Email" model-value=""/>
-                <UTextarea :rows="1" placeholder="Password" model-value=""/>
+                <UTextarea :rows="1" placeholder="Email" v-model="userEmail"/>
+                <UTextarea :rows="1" placeholder="Password" v-model="userPassword"/>
             </div>
         </div>
         

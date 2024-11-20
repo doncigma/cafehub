@@ -1,5 +1,7 @@
-import { Login } from "~/server/api/api.ts"
+import { APILogin } from "~/server/api/api.ts"
 
-export default function apiHandler() {
-    
+export function Login(userEmail, userPassword) {
+    if (userEmail.trim() && userPassword.trim()) {
+        APILogin(userEmail, userPassword);
+    }
 }
