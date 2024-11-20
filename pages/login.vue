@@ -10,7 +10,9 @@ export default {
     },
     methods: {
         CheckLogin() {
-            Login(this.userEmail, this.userPassword);
+            if (Login(this.userEmail, this.userPassword) == "success") {
+                this.$router.push('/index.vue')
+            }
         }
     }
 }
@@ -37,7 +39,7 @@ definePageMeta({
         
         <!-- Login button -->
         <div>
-            <UButton color="" class="bg-coffee-800" to="/login">Login</UButton>
+            <UButton color="" class="bg-coffee-800" @click="CheckLogin">Login</UButton>
         </div>
 
         <div class="flex justify-center">Not a member?&ThinSpace;<NuxtLink to="/signup" class="text-coffeewarm-950 font-bold hover:underline">Sign up,</NuxtLink>&ThinSpace;now!</div>
