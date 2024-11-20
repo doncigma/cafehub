@@ -2,8 +2,17 @@
 export default {
   data() {
     return {
-      myVariable: 'Hello from Nuxt!'
+      cafeName: "",
+      cafePrices: {
+        average: ""
+      },
+      cafeRating: ""
     };
+  },
+  methods: {
+    queryCafe() {
+      
+    }
   }
 };
 </script>

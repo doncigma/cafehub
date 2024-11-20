@@ -1,4 +1,4 @@
-<script setup>
+<script>
     const nuxtApp = useNuxtApp();
     const show = ref(false);
 

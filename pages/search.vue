@@ -1,5 +1,5 @@
 <script>
-    import { apiCaller } from '~/utils/apiHandler';
+import { apiCaller } from '~/utils/apiHandler';
 
 export default {
     data() {
@@ -19,6 +19,6 @@ export default {
 
 <template>
     <div>
-        <UTextarea placeholder="Search cafes..." v-model="searchQuery" />
+        <UTextarea placeholder="Search cafes..." v-model="searchQuery" @keyup.enter="handleSearch" />
     </div>
 </template>
