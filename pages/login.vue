@@ -1,24 +1,31 @@
 <script>
-import { Login } from '~/utils/apiHandler.js';
+import { Login } from "~/utils/apiHandler.js";
 
 export default {
     data() {
         return {
             userEmail: "",
-            userPassword: ""
+            userPassword: "",
+            errorMsg: ""
         };
     },
     methods: {
-        CheckLogin() {
-            if (Login(this.userEmail, this.userPassword) == "success") {
-                this.$router.push('/index.vue')
+        async handleLogin() {
+            const status = await Login(this.userEmail, this.userPassword);
+            if (status === "success") {
+                setTimeout(() => {
+                    this.$router.push('/index');
+                }, 1000);
+            }
+            else {
+                this.errorMsg = "Invalid email or password. Please try again."
             }
         }
     }
 }
 
 definePageMeta({
-  layout: 'login'
+    layout: "login"
 });
 </script>
 
@@ -28,20 +35,22 @@ definePageMeta({
         <div>
             <span class="text-lg md:text-xl">Login</span>
         </div>
-        
-        <!-- Email and Password -->
+
+        <!-- Email and Password Form -->
         <div>
-            <div>
-                <UTextarea :rows="1" placeholder="Email" v-model="userEmail"/>
-                <UTextarea :rows="1" placeholder="Password" v-model="userPassword"/>
-            </div>
-        </div>
-        
-        <!-- Login button -->
-        <div>
-            <UButton color="" class="bg-coffee-800" @click="CheckLogin">Login</UButton>
+            <UForm>
+                <input class="bg-coffee-600" v-model="userEmail" type="email" placeholder="Enter your email" required />
+                <input class="bg-coffee-800" v-model="userPassword" type="password" placeholder="Enter your password"
+                    required />
+                <button class="bg-coffee-300" type="submit" @click="handleLogin">Login</button>
+            </UForm>
         </div>
 
-        <div class="flex justify-center">Not a member?&ThinSpace;<NuxtLink to="/signup" class="text-coffeewarm-950 font-bold hover:underline">Sign up,</NuxtLink>&ThinSpace;now!</div>
+        <!-- Error Message -->
+        <p v-if="errorMsg" class="error">{{ errorMsg }}</p>
+
+        <!-- Path to Signup -->
+        <div class="flex justify-center">Not a member?&ThinSpace;<NuxtLink to="/signup"
+                class="text-coffeewarm-950 font-bold hover:underline">Sign up,</NuxtLink>&ThinSpace;now!</div>
     </div>
 </template>
