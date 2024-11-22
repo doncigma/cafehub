@@ -1,6 +1,4 @@
 <script>
-import { Login } from "~/utils/apiHandler.js";
-
 export default {
     data() {
         return {

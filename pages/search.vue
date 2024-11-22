@@ -1,5 +1,5 @@
 <script>
-import { apiCaller } from '~/utils/apiHandler';
+import { apiCaller } from '~/server/api/api';
 
 export default {
     data() {
