@@ -82,7 +82,7 @@ export async function GetCafeData(cafeName) {
     }
 }
 
-export async function SubmitReview(userEmail, userPassword, userFirstName, userLastName) {
+export async function SubmitReview(userEmail, userPassword, userFirstName, userLastName, {rating: [], text: undefined}) {
     try {
         const response = await fetch("/api/submitReview", {
             method: "POST",

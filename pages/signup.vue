@@ -70,16 +70,16 @@ definePageMeta({
 </script>
 
 <template>
-    <div class="flex flex-col">
+    <div class="flex flex-col items-center">
         <!-- Login -->
         <div>
             <span class="text-lg md:text-xl font-bold text-darkcaramel">Sign-up</span>
         </div>
 
-        <div class="flex justify-center">
+        <div class="flex px-4 items-center">
             <!-- Account Creation Error -->
             <UTextarea v-if="errorMsg">{{ errorMsg }}</UTextarea>
-            
+
             <!-- Sign-up Form -->
             <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
                 <UFormGroup name="firstName" label="First Name">

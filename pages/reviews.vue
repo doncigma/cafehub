@@ -1,10 +1,10 @@
 <script>
 export default {
-  middleware: 'auth'
+    middleware: 'auth'
 };
 
 definePageMeta({
-  layout: 'dashboard'
+    layout: 'dashboard'
 });
 </script>
 
