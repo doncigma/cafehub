@@ -1,51 +1,66 @@
 <script setup lang="ts">
 import Joi from 'joi'
-import type { FormSubmitEvent } from '#ui/types'
+import type { FormError, FormSubmitEvent } from '#ui/types'
 
 const schema = Joi.object({
     email: Joi.string().required(),
-    password: Joi.string()
-        .min(8)
-        .required()
+    password: Joi.string().min(8).required(),
+    firstName: Joi.string(),
+    lastName: Joi.string(),
 })
 
 const state = reactive({
     email: undefined,
-    password: undefined
+    password: undefined,
+    firstName: undefined,
+    lastName: undefined,
 })
 
+const validate = (state: any): FormError[] => {
+    const errors = [];
+    if (!state.email) errors.push({ path: 'email', message: 'Please enter a valid email address.' });
+    if (!state.password) errors.push({ path: 'password', message: 'Password must be at least 8 characters long.' });
+    if (!state.firstName) errors.push({ path: 'firstName', message: 'Required.' });
+    if (!state.lastName) errors.push({ path: 'lastName', message: 'Required.' });
+    return errors;
+}
+
+var errorMsg = ref<string | null>(null);
 async function onSubmit(event: FormSubmitEvent<any>) {
-    const status = await CreateAccount(this.userEmail, this.userPassword, this.userFirstName, this.userLastName);
+    const status = await CreateAccount(state.email, state.password, state.firstName, state.lastName);
     if (status === "success") {
-        // store user data somewhere for display
+        const router = useRouter();
         setTimeout(() => {
-            this.$router.push('/index');
+            router.push('/index');
         }, 1000);
     }
     else {
-        this.errorMsg = "That account may already exist. Please try logging in."
+        errorMsg.value = "That account may already exist. Please try logging in."
     }
 }
 
 // export default {
 //     data() {
 //         return {
-//             searchQuery: ""
+//             email: undefined,
+//             password: undefined,
+//             firstName: undefined,
+//             lastName: undefined
 //         };
 //     },
 //     methods: {
-// async handleSignup() {
-//     const status = await CreateAccount(this.userEmail, this.userPassword, this.userFirstName, this.userLastName);
-//     if (status === "success") {
-//         // store user data somewhere for display
-//         setTimeout(() => {
-//             this.$router.push('/index');
-//         }, 1000);
-//     }
-//     else {
-//         this.errorMsg = "That account may already exist. Please try logging in."
-//     }
-// }
+//         async handleSignup() {
+//             const status = await CreateAccount(this.userEmail, this.userPassword, this.userFirstName, this.userLastName);
+//             if (status === "success") {
+//                 // store user data somewhere for display
+//                 setTimeout(() => {
+//                     this.$router.push('/index');
+//                 }, 1000);
+//             }
+//             else {
+//                 this.errorMsg = "That account may already exist. Please try logging in."
+//             }
+//         }
 //     }
 // }
 
@@ -61,39 +76,25 @@ definePageMeta({
             <span class="text-lg md:text-xl font-bold text-darkcaramel">Sign-up</span>
         </div>
 
-        <!-- Sign-up info -->
-        <div>
-            <div>
-                <UTextarea color="" class="bg-caramel" :rows="1" placeholder="Name" model-value="" />
-                <UTextarea color="" class="bg-caramel" :rows="1" placeholder="Email" model-value="" />
-                <UTextarea color="" class="bg-caramel" :rows="1" placeholder="Password" model-value="" />
-                <UTextarea color="" class="bg-caramel" :rows="1" placeholder="Confirm Password" model-value="" />
-            </div>
+        <div class="flex justify-center">
+            <!-- Account Creation Error -->
+            <UTextarea v-if="errorMsg">{{ errorMsg }}</UTextarea>
+            
+            <!-- Sign-up Form -->
+            <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+                <UFormGroup name="firstName" label="First Name">
+                    <UInput v-model="state.firstName" />
+                </UFormGroup>
 
-            <!-- <UForm>
-                <input class="bg-caramel" v-model="userFirstName" type="name" placeholder="Enter your email" required />
-                <input class="bg-caramel" v-model="userLastName" type="name" placeholder="Enter your email" required />
-                <input class="bg-caramel" v-model="userEmail" type="email" placeholder="Enter your email" required />
-                <input class="bg-caramel" v-model="userPassword" type="password" placeholder="Enter your password"
-                    required />
+                <UFormGroup name="lastName" label="Last Name">
+                    <UInput v-model="state.lastName" />
+                </UFormGroup>
 
-                <button class="bg-darkcaramel" type="submit" @click="handleSignup">Sign up</button>
-            </UForm> -->
-
-            <UForm :validate="validate" :state="state" class="space-y-4" @submit="onSubmit">
-                <UFormGroup label="FirstName" name="firstName">
+                <UFormGroup name="email" label="Email">
                     <UInput v-model="state.email" />
                 </UFormGroup>
 
-                <UFormGroup label="LastName" name="lastName">
-                    <UInput v-model="state.email" />
-                </UFormGroup>
-
-                <UFormGroup label="Email" name="email">
-                    <UInput v-model="state.email" />
-                </UFormGroup>
-
-                <UFormGroup label="Password" name="password">
+                <UFormGroup name="password" label="Password">
                     <UInput v-model="state.password" type="password" />
                 </UFormGroup>
 
