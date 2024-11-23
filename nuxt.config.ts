@@ -5,7 +5,7 @@ export default defineNuxtConfig({
     modules: ['@nuxt/ui', '@nuxt/image', '@nuxtjs/tailwindcss', '@pinia/nuxt'],
     runtimeConfig: {
         public: {
-            transLogoSrc: 'logos/CafeHub-logo-trans.png',
+            transLogoSrc: 'logos/CafeHub-logo-trans.png', 
             noTextLogoSrc: 'logos/CafeHub-no-text.png'
         },
     },
