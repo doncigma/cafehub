@@ -1,19 +1,11 @@
 {
-  // https://nuxt.com/docs/guide/concepts/typescript
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
     "moduleResolution": "node",
     "typeRoots": ["./node_modules/@types", "./.nuxt/types"],
     "types": [],
-    "strict": true,
-    "baseUrl": ".",
-    "paths": {
-      "~/*": ["./*"],
-      "@/*": ["./*"]
-    }
   },
   "include": [
-    // Include Nuxt and project files
     ".nuxt",
     "./**/*.ts",
     "./**/*.d.ts"

@@ -1,14 +1,14 @@
-import { defineStore } from '@pinia/nuxt';
+// import { defineStore } from '@pinia/nuxt';
 
-export const useUserStore = defineStore('user', {
-    state: () => ({
-        name: '',
-        isLoggedIn: false,
-    }),
-    actions: {
-        login(name: string) {
-        },
-        logout() {
-        },
-    },
-});
+// export const useUserStore = defineStore('user', {
+//     state: () => ({
+//         name: '',
+//         isLoggedIn: false,
+//     }),
+//     actions: {
+//         login(name: string) {
+//         },
+//         logout() {
+//         },
+//     },
+// });
