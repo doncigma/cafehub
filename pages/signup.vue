@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Joi from 'joi'
-import type { FormError, FormSubmitEvent } from '#ui/types'
+// import type { FormError, FormSubmitEvent } from '#ui/types'
 
 const schema = Joi.object({
     email: Joi.string().required(),
@@ -16,7 +16,7 @@ const state = reactive({
     lastName: undefined,
 })
 
-const validate = (state: any): FormError[] => {
+const validate = (state: any) => {
     const errors = [];
     if (!state.email) errors.push({ path: 'email', message: 'Please enter a valid email address.' });
     if (!state.password) errors.push({ path: 'password', message: 'Password must be at least 8 characters long.' });
@@ -26,7 +26,7 @@ const validate = (state: any): FormError[] => {
 }
 
 var errorMsg = ref<string | null>(null);
-async function onSubmit(event: FormSubmitEvent<any>) {
+async function onSubmit() {
     const status = await CreateAccount(state.email, state.password, state.firstName, state.lastName);
     if (status === "success") {
         const router = useRouter();
