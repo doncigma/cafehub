@@ -43,7 +43,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
 <template>
     <!-- Review Popout -->
     <UPopover overlay>
-        <UButton color="white" label="Open" trailing-icon="i-heroicons-chevron-down-20-solid" />
+        <UButton color="white" label="Add a review" trailing-icon="i-heroicons-chevron-down-20-solid" />
 
         <template #panel>
             <div class="p-4">
@@ -68,6 +68,10 @@ async function onSubmit(event: FormSubmitEvent<any>) {
 
                         <UFormGroup name="password" label="Password">
                             <UInput v-model="state.password" type="password" />
+                        </UFormGroup>
+                        
+                        <UFormGroup name="password" label="Review">
+                            <UTextarea />
                         </UFormGroup>
 
                         <UButton type="submit">Sign up</UButton>
