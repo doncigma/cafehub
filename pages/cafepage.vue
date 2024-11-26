@@ -12,10 +12,8 @@ const schema = Joi.object({
 })
 
 const state = reactive({
-    email: undefined,
-    password: undefined,
-    firstName: undefined,
-    lastName: undefined,
+    email: "",
+    reviewContent: ""
 })
 
 const validate = (state: any) => {
@@ -29,8 +27,10 @@ const validate = (state: any) => {
 
 var errorMsg = ref < string | null > (null);
 async function onSubmit() {
-    const status = await SubmitReview();
+    const status = await SubmitReview(state.email, store.username);
     if (status === "success") {
+        //update store
+
         const router = useRouter();
         setTimeout(() => {
             router.back();

@@ -8,15 +8,18 @@ export default {
         };
     },
     methods: {
-        async handleLogin() {
-            const status = await Login(this.userEmail, this.userPassword);
+        handleLogin() {
+            const status = Login(this.userEmail, this.userPassword);
             if (status === "success") {
+                const store = useUserStore();
+                store.login(state.email, state.username);
+                
                 setTimeout(() => {
                     this.$router.push('/index');
                 }, 1000);
             }
             else {
-                this.errorMsg = "Invalid email or password. Please try again."
+                this.errorMsg = "Invalid email or password. Please try again.";
             }
         }
     }

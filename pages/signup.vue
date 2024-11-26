@@ -5,15 +5,13 @@ import { useUserStore } from '~/store/user';
 const schema = Joi.object({
     email: Joi.string().required(),
     password: Joi.string().min(8).required(),
-    firstName: Joi.string(),
-    lastName: Joi.string(),
+    username: Joi.string()
 })
 
 const state = reactive({
     email: '',
     password: '',
-    firstName: '',
-    lastName: '',
+    username: ''
 })
 
 const validate = (state: any) => {
@@ -27,10 +25,10 @@ const validate = (state: any) => {
 
 var errorMsg = ref<string | null>(null);
 async function onSubmit() {
-    const status = await CreateAccount(state.email, state.password, state.firstName, state.lastName);
+    const status = await CreateAccount(state.email, state.password, state.username);
     if (status === "success") {
         const store = useUserStore();
-        store.login(state.email, state.firstName, state.lastName);
+        store.login(state.email, state.username);
 
         const router = useRouter();
         setTimeout(() => {
@@ -61,11 +59,7 @@ definePageMeta({
             <!-- Sign-up Form -->
             <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
                 <UFormGroup name="firstName" label="First Name">
-                    <UInput v-model="state.firstName" />
-                </UFormGroup>
-
-                <UFormGroup name="lastName" label="Last Name">
-                    <UInput v-model="state.lastName" />
+                    <UInput v-model="state.username" />
                 </UFormGroup>
 
                 <UFormGroup name="email" label="Email">

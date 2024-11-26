@@ -1,22 +1,18 @@
 export const useUserStore = defineStore('user', {
     state: () => ({
-        firstName: '',
-        lastName: '',
         email: '',
-        password: '',
+        username: '',
         isLoggedIn: false,
     }),
     actions: {
-        login(email: string, firstName: string, lastName: string) {
+        login(email: string, username: string) {
             this.email = email;
-            this.firstName = firstName;
-            this.lastName = lastName;
+            this.username = username;
             this.isLoggedIn = true;
         },
         logout() {
             this.email = '';
-            this.firstName = '';
-            this.lastName = '';
+            this.username = '',
             this.isLoggedIn = false;
         },
     },
