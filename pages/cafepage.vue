@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import Joi from 'joi'
-// import type { FormError, FormSubmitEvent } from '#ui/types'
-// import type { FormError, FormSubmitEvent } from '@nuxt/ui'
+import { useUserStore } from '~/store/user';
+
+const store = useUserStore();
 
 const schema = Joi.object({
     email: Joi.string().required(),
@@ -32,7 +33,7 @@ async function onSubmit() {
     if (status === "success") {
         const router = useRouter();
         setTimeout(() => {
-            router.push('/index');
+            router.back();
         }, 1000);
     }
     else {
@@ -44,38 +45,20 @@ async function onSubmit() {
 <template>
     <!-- Review Popout -->
     <UPopover overlay>
-        <UButton color="white" label="Add a review" trailing-icon="i-heroicons-chevron-down-20-solid" />
+        <UButton label="Add a review" trailing-icon="i-heroicons-chevron-down-20-solid" />
 
-        <template #panel>
+        <template>
             <div class="p-4">
-                <Placeholder class="h-20 w-48" />
-                
-                <!-- Sign-up Form -->
-                <div class="flex px-4 items-center">
+                <!-- Review Form -->
+                <div v-if="store.isLoggedIn" class="flex px-4 items-center">
                     <UTextarea v-if="errorMsg">{{ errorMsg }}</UTextarea>
 
                     <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-                        <UFormGroup name="firstName" label="First Name">
-                            <UInput v-model="state.firstName" />
-                        </UFormGroup>
-
-                        <UFormGroup name="lastName" label="Last Name">
-                            <UInput v-model="state.lastName" />
-                        </UFormGroup>
-
-                        <UFormGroup name="email" label="Email">
-                            <UInput v-model="state.email" />
-                        </UFormGroup>
-
-                        <UFormGroup name="password" label="Password">
-                            <UInput v-model="state.password" type="password" />
-                        </UFormGroup>
-                        
                         <UFormGroup name="password" label="Review">
-                            <UTextarea />
+                            <UTextarea></UTextarea>
                         </UFormGroup>
 
-                        <UButton type="submit">Sign up</UButton>
+                        <UButton type="submit">Submit review</UButton>
                     </UForm>
                 </div>
             </div>

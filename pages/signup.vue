@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Joi from 'joi'
-// import type { FormError, FormSubmitEvent } from '#ui/types'
+import { useUserStore } from '~/store/user';
 
 const schema = Joi.object({
     email: Joi.string().required(),
@@ -10,10 +10,10 @@ const schema = Joi.object({
 })
 
 const state = reactive({
-    email: undefined,
-    password: undefined,
-    firstName: undefined,
-    lastName: undefined,
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: '',
 })
 
 const validate = (state: any) => {
@@ -29,6 +29,9 @@ var errorMsg = ref<string | null>(null);
 async function onSubmit() {
     const status = await CreateAccount(state.email, state.password, state.firstName, state.lastName);
     if (status === "success") {
+        const store = useUserStore();
+        store.login(state.email, state.firstName, state.lastName);
+
         const router = useRouter();
         setTimeout(() => {
             router.push('/index');
@@ -38,31 +41,6 @@ async function onSubmit() {
         errorMsg.value = "That account may already exist. Please try logging in."
     }
 }
-
-// export default {
-//     data() {
-//         return {
-//             email: undefined,
-//             password: undefined,
-//             firstName: undefined,
-//             lastName: undefined
-//         };
-//     },
-//     methods: {
-//         async handleSignup() {
-//             const status = await CreateAccount(this.userEmail, this.userPassword, this.userFirstName, this.userLastName);
-//             if (status === "success") {
-//                 // store user data somewhere for display
-//                 setTimeout(() => {
-//                     this.$router.push('/index');
-//                 }, 1000);
-//             }
-//             else {
-//                 this.errorMsg = "That account may already exist. Please try logging in."
-//             }
-//         }
-//     }
-// }
 
 definePageMeta({
     layout: 'login'
