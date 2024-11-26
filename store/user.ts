@@ -1,4 +1,4 @@
-// import { defineStore } from '@pinia/nuxt';
+// import { defineStore } from 'pinia';
 
 // export const useUserStore = defineStore('user', {
 //     state: () => ({

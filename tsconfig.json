@@ -1,13 +1,11 @@
 {
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
-    "moduleResolution": "node",
-    "typeRoots": ["./node_modules/@types", "./.nuxt/types"],
-    "types": [],
-  },
-  "include": [
-    ".nuxt",
-    "./**/*.ts",
-    "./**/*.d.ts"
-  ]
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"],
+      "@/*": ["./*"]
+    }
+  }
 }
