@@ -12,9 +12,7 @@ function handleClick() {
         <div class="flex flex-row bg-darkcaramel justify-between items-center px-2 py-2">
             <!-- Back link -->
             <div class="px-4">
-                <NuxtLink class="text-base md:text-lg" @click.prevent="handleClick">Back</NuxtLink>
-                <UButton @click="handleClick" class="text-blue-500 underline hover:text-blue-700">Back</UButton>
-                <button @click="handleClick" class="text-blue-500 underline hover:text-blue-700">Back</button>
+                <button @click="handleClick" class="text-coffee-50 hover:text-coffee-300 hover:underline">Back</button>
             </div>
 
             <!-- Logo -->

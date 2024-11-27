@@ -1,36 +1,27 @@
 <script setup lang="ts">
+import { store } from '../stores';
 import Joi from 'joi'
-import { useUserStore } from '~/storeold/user';
-
-const store = useUserStore();
 
 const schema = Joi.object({
-    email: Joi.string().required(),
-    password: Joi.string().min(8).required(),
-    firstName: Joi.string(),
-    lastName: Joi.string(),
+    reviewContent: Joi.string().min(10).max(500).required(),
 })
 
 const state = reactive({
-    email: "",
-    reviewContent: ""
+    reviewContent: ''
 })
 
 const validate = (state: any) => {
     const errors = [];
-    if (!state.email) errors.push({ path: 'email', message: 'Please enter a valid email address.' });
-    if (!state.password) errors.push({ path: 'password', message: 'Password must be at least 8 characters long.' });
-    if (!state.firstName) errors.push({ path: 'firstName', message: 'Required.' });
-    if (!state.lastName) errors.push({ path: 'lastName', message: 'Required.' });
+    if (!state.reviewContent) errors.push({ path: 'reviewContent', message: 'Please enter a review.' });
+    else if (state.reviewContent.length() < 10) errors.push({ path: 'reviewContent', message: 'Review is too short.' });
+    else if (state.reviewContent.length() > 500) errors.push({ path: 'reviewContent', message: 'Review is too long.' });
     return errors;
 }
 
-var errorMsg = ref < string | null > (null);
+var errorMsg = ref<string | null>(null);
 async function onSubmit() {
-    const status = await SubmitReview(state.email, store.username);
-    if (status === "success") {
-        //update store
-
+    const status = await SubmitReview(store.username, state.reviewContent);
+    if (status) {
         const router = useRouter();
         setTimeout(() => {
             router.back();
@@ -43,6 +34,12 @@ async function onSubmit() {
 </script>
 
 <template>
+    <!-- Login Message -->
+    <p v-if="!store.isLoggedIn">
+        To leave a review, you must log in, first! Log in <NuxtLink to="/login"
+            class="text-coffeewarm-950 font-bold hover:underline">here.</NuxtLink>
+    </p>
+
     <!-- Review Popout -->
     <UPopover overlay>
         <UButton label="Add a review" trailing-icon="i-heroicons-chevron-down-20-solid" />
@@ -50,12 +47,14 @@ async function onSubmit() {
         <template>
             <div class="p-4">
                 <!-- Review Form -->
-                <div v-if="store.isLoggedIn" class="flex px-4 items-center">
+                <div class="flex px-4 items-center">
+                    <!-- Error Message -->
                     <UTextarea v-if="errorMsg">{{ errorMsg }}</UTextarea>
 
+                    <!-- Form -->
                     <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-                        <UFormGroup name="password" label="Review">
-                            <UTextarea></UTextarea>
+                        <UFormGroup name="reviewContent" label="Review">
+                            <UTextarea v-model="state.reviewContent" />
                         </UFormGroup>
 
                         <UButton type="submit">Submit review</UButton>

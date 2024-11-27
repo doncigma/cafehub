@@ -4,7 +4,7 @@ interface StoreState {
     isLoggedIn: boolean;
 }
 
-const store = reactive<StoreState>({
+export const store = reactive<StoreState>({
     email: '',
     username: '',
     isLoggedIn: false,

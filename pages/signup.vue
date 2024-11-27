@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { methods } from '../stores';
 import Joi from 'joi'
 
 const schema = Joi.object({
@@ -15,21 +16,20 @@ const state = reactive({
 
 const validate = (state: any) => {
     const errors = [];
+    if (!state.username) errors.push({ path: 'username', message: 'Required.' });
     if (!state.email) errors.push({ path: 'email', message: 'Please enter a valid email address.' });
     if (!state.password) errors.push({ path: 'password', message: 'Password must be at least 8 characters long.' });
-    if (!state.firstName) errors.push({ path: 'firstName', message: 'Required.' });
-    if (!state.lastName) errors.push({ path: 'lastName', message: 'Required.' });
     return errors;
 }
 
+const router = useRouter();
 var errorMsg = ref<string | null>(null);
-async function onSubmit() {
-    const status = await CreateAccount(state.email, state.password, state.username);
-    if (status === "success") {
-        const store = useUserStore();
-        store.login(state.email, state.username);
+async function onSignup() {
+    const result = await CreateAccount(state.email, state.password, state.username);
+    if (result.status) {
+        methods.updateUser(state.email, state.username);
+        methods.setLoggedIn(true);
 
-        const router = useRouter();
         setTimeout(() => {
             router.push('/index');
         }, 1000);
@@ -46,18 +46,18 @@ definePageMeta({
 
 <template>
     <div class="flex flex-col items-center">
-        <!-- Login -->
+        <!-- Sign in -->
         <div>
-            <span class="text-lg md:text-xl font-bold text-darkcaramel">Sign-up</span>
+            <span class="text-lg md:text-xl font-bold text-darkcaramel">Signup</span>
         </div>
 
         <div class="flex px-4 items-center">
             <!-- Account Creation Error -->
             <UTextarea v-if="errorMsg">{{ errorMsg }}</UTextarea>
 
-            <!-- Sign-up Form -->
-            <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-                <UFormGroup name="firstName" label="First Name">
+            <!-- Signup Form -->
+            <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4" @submit="onSignup">
+                <UFormGroup name="username" label="Username">
                     <UInput v-model="state.username" />
                 </UFormGroup>
 
@@ -73,7 +73,8 @@ definePageMeta({
             </UForm>
         </div>
 
-        <div>If you already have a registered account, you can <NuxtLink to="/login"
-                class="text-coffeewarm-950 font-bold hover:underline">login </NuxtLink>here!</div>
+        <!-- Path to Login -->
+        <div>If you already have an account, you can login <NuxtLink to="/login"
+                class="text-coffeewarm-950 font-bold hover:underline">here</NuxtLink>!</div>
     </div>
 </template>

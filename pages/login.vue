@@ -1,29 +1,41 @@
-<script>
+<script setup lang="ts">
 import { methods } from '../stores';
+import Joi from 'joi'
 
-export default {
-    data() {
-        return {
-            email: '',
-            password: '',
-            errorMsg: ''
-        };
-    },
-    methods: {
-        handleLogin() {
-            const result = Login(this.email, this.password);
-            if (result.status) {
-                methods.updateUser(this.email, result.username);
-                methods.setLoggedIn(true);
-                
-                setTimeout(() => {
-                    this.$router.push('/index');
-                }, 1000);
-            }
-            else {
-                this.errorMsg = "Invalid email or password. Please try again.";
-            }
-        }
+const schema = Joi.object({
+    email: Joi.string().required(),
+    password: Joi.string().min(8).required(),
+    username: Joi.string()
+})
+
+const state = reactive({
+    email: '',
+    password: '',
+    username: ''
+})
+
+const validate = (state: any) => {
+    const errors = [];
+    if (!state.email) errors.push({ path: 'email', message: 'Please enter a valid email address.' });
+    if (!state.password) errors.push({ path: 'password', message: 'Password must be at least 8 characters long.' });
+    return errors;
+}
+
+const router = useRouter();
+var errorMsg = ref<string | null>(null);
+
+async function onLogin() {
+    const result = await Login(state.email, state.password);
+    if (result.status) {
+        methods.updateUser(state.email, result.username);
+        methods.setLoggedIn(true);
+        
+        setTimeout(() => {
+            router.push('/index');
+        }, 1000);
+    }
+    else {
+        errorMsg.value = "There was an error loggin in. Try again later or sign up if you have not already."
     }
 }
 
@@ -39,18 +51,24 @@ definePageMeta({
             <span class="text-lg md:text-xl">Login</span>
         </div>
 
-        <!-- Email and Password Form -->
-        <div>
-            <UForm>
-                <input class="bg-coffee-600" v-model="email" type="email" placeholder="Enter your email" required />
-                <input class="bg-coffee-800" v-model="password" type="password" placeholder="Enter your password"
-                    required />
-                <button class="bg-coffee-300" type="submit" @click="handleLogin">Login</button>
+        <!-- Login Form -->
+        <div class="flex px-4 items-center">
+            <!-- Error Message -->
+            <UTextarea v-if="errorMsg">{{ errorMsg }}</UTextarea>
+
+            <!-- Form -->
+            <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4" @submit="onLogin">
+                <UFormGroup name="email" label="Email">
+                    <UInput v-model="state.email" />
+                </UFormGroup>
+
+                <UFormGroup name="password" label="Password">
+                    <UInput v-model="state.password" type="password" />
+                </UFormGroup>
+
+                <UButton type="submit">Log in</UButton>
             </UForm>
         </div>
-
-        <!-- Error Message -->
-        <p v-if="errorMsg" class="error">{{ errorMsg }}</p>
 
         <!-- Path to Signup -->
         <div class="flex justify-center">Not a member?&ThinSpace;<NuxtLink to="/signup"
