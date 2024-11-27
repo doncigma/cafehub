@@ -1,18 +1,20 @@
 <script>
+import { methods } from '../stores';
+
 export default {
     data() {
         return {
-            userEmail: "",
-            userPassword: "",
-            errorMsg: ""
+            email: '',
+            password: '',
+            errorMsg: ''
         };
     },
     methods: {
         handleLogin() {
-            const status = Login(this.userEmail, this.userPassword);
-            if (status === "success") {
-                const store = useUserStore();
-                store.login(state.email, state.username);
+            const result = Login(this.email, this.password);
+            if (result.status) {
+                methods.updateUser(this.email, result.username);
+                methods.setLoggedIn(true);
                 
                 setTimeout(() => {
                     this.$router.push('/index');
@@ -40,8 +42,8 @@ definePageMeta({
         <!-- Email and Password Form -->
         <div>
             <UForm>
-                <input class="bg-coffee-600" v-model="userEmail" type="email" placeholder="Enter your email" required />
-                <input class="bg-coffee-800" v-model="userPassword" type="password" placeholder="Enter your password"
+                <input class="bg-coffee-600" v-model="email" type="email" placeholder="Enter your email" required />
+                <input class="bg-coffee-800" v-model="password" type="password" placeholder="Enter your password"
                     required />
                 <button class="bg-coffee-300" type="submit" @click="handleLogin">Login</button>
             </UForm>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Joi from 'joi'
-import { useUserStore } from '~/store/user';
+import { useUserStore } from '~/storeold/user';
 
 const store = useUserStore();
 

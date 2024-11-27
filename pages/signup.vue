@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Joi from 'joi'
-import { useUserStore } from '~/store/user';
 
 const schema = Joi.object({
     email: Joi.string().required(),
