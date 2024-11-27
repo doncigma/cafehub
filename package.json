@@ -10,13 +10,14 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxt/content": "^2.13.4",
     "@nuxt/image": "^1.8.1",
-    "@nuxt/ui": "^2.18.7",
-    "@nuxtjs/tailwindcss": "^6.12.2",
-    "nuxt": "^3.13.2"
+    "@nuxt/ui": "^2.19.2",
+    "joi": "^17.13.3",
+    "nuxt": "^3.14.1592"
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.14"
+    "@nuxt/devtools": "1.6.1",
+    "tailwindcss": "^3.4.15",
+    "typescript": "^5.7.2"
   }
 }

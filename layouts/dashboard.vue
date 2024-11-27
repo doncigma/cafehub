@@ -1,5 +1,5 @@
 <template>
-    <UserHeader />
+    <BareHeader />
     <slot />
     <NavFooter />
 </template>

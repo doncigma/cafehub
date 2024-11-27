@@ -1,4 +1,4 @@
-export function Login(_username: string, _password: string) {
+export function APILogin(_username: string, _password: string) {
     let promise = $fetch("/api/login", {
         body: {
             name: _username,
@@ -8,7 +8,7 @@ export function Login(_username: string, _password: string) {
     return promise;
 }
 
-export function CreateAccount(_email: string, _username: string, _password: string) {
+export function APICreateAccount(_email: string, _username: string, _password: string) {
     let promise = $fetch("/api/createAccount", {
         body: {
             email: _email,
@@ -19,7 +19,7 @@ export function CreateAccount(_email: string, _username: string, _password: stri
     return promise;
 }
 
-export function DeleteAccount(_email: string) {
+export function APIDeleteAccount(_email: string) {
     let promise = $fetch("/api/deleteAccount", {
         body: {
             email: _email
@@ -28,7 +28,7 @@ export function DeleteAccount(_email: string) {
     return promise;
 }
 
-export function ResetPassword(_email: string) {
+export function APIResetPassword(_email: string) {
     let promise = $fetch("/api/resetPassword", {
         body: {
             email: _email
@@ -37,7 +37,7 @@ export function ResetPassword(_email: string) {
     return promise;
 }
 
-export function ChangePassword(_email: string, _password: string) {
+export function APIChangePassword(_email: string, _password: string) {
     let promise = $fetch("/api/changePassword", {
         body: {
             email: _email,
@@ -47,12 +47,12 @@ export function ChangePassword(_email: string, _password: string) {
     return promise;
 }
 
-export function GetCafeList() {
+export function APIGetCafeList() {
     let promise = $fetch("/api/getCafeList");
     return promise;
 }
 
-export function GetCafeData(_cafe: string) {
+export function APIGetCafeData(_cafe: string) {
     let promise = $fetch("/api/getCafeData", {
         body: {
             cafe: _cafe
@@ -61,7 +61,7 @@ export function GetCafeData(_cafe: string) {
     return promise;
 }
 
-export function SubmitReview(_cafe: string, _email: string, _taste: number, _service: number, _atmosphere: number, _review: string) {
+export function APISubmitReview(_cafe: string, _email: string, _taste: number, _service: number, _atmosphere: number, _review: string) {
     let promise = $fetch("/api/submitReview", {
         body: {
             cafe: _cafe,
