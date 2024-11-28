@@ -34,33 +34,38 @@ async function onSubmit() {
 </script>
 
 <template>
-    <!-- Login Message -->
-    <p v-if="!store.isLoggedIn">
-        To leave a review, you must log in, first! Log in <NuxtLink to="/login"
-            class="text-coffeewarm-950 font-bold hover:underline">here.</NuxtLink>
-    </p>
+    
 
     <!-- Review Popout -->
-    <UPopover overlay>
-        <UButton label="Add a review" trailing-icon="i-heroicons-chevron-down-20-solid" />
+    <div>
+        <!-- Login Message -->
+        <p v-if="!store.isLoggedIn">
+            To leave a review, you must log in, first! Log in <NuxtLink to="/login"
+                class="text-coffeewarm-950 font-bold hover:underline">here.</NuxtLink>
+        </p>
 
-        <template>
-            <div class="p-4">
-                <!-- Review Form -->
-                <div class="flex px-4 items-center">
-                    <!-- Error Message -->
-                    <UTextarea v-if="errorMsg">{{ errorMsg }}</UTextarea>
+        <!-- Popout -->
+        <UPopover overlay>
+            <UButton label="Add a review" trailing-icon="i-heroicons-chevron-down-20-solid" />
 
-                    <!-- Form -->
-                    <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-                        <UFormGroup name="reviewContent" label="Review">
-                            <UTextarea v-model="state.reviewContent" />
-                        </UFormGroup>
+            <template #panel>
+                <div class="p-4">
+                    <!-- Review Form -->
+                    <div class="flex px-4 items-center">
+                        <!-- Error Message -->
+                        <UTextarea v-if="errorMsg">{{ errorMsg }}</UTextarea>
 
-                        <UButton type="submit">Submit review</UButton>
-                    </UForm>
+                        <!-- Form -->
+                        <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
+                            <UFormGroup name="reviewContent" label="Review">
+                                <UTextarea v-model="state.reviewContent" />
+                            </UFormGroup>
+
+                            <UButton type="submit">Submit review</UButton>
+                        </UForm>
+                    </div>
                 </div>
-            </div>
-        </template>
-    </UPopover>
+            </template>
+        </UPopover>
+    </div>
 </template>
