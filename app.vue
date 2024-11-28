@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { store, methods } from './stores/userStore';
+
+
+</script>
+
 <template>
     <div class="bg-coffee-500 min-h-screen">
         <NuxtLayout>

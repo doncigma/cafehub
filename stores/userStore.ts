@@ -32,28 +32,6 @@ export const methods: StoreMethods = {
     }
 }
 
-// const store = reactive({
-//     email: '',
-//     username: '',
-//     isLoggedIn: false,
-// })
-
-// const methods = {
-//     updateUser(email, username) {
-//         store.email = email;
-//         store.username = username;
-//         store.isLoggedIn = true;
-//     },
-//     clearUser() {
-//         store.email = '';
-//         store.username = '';
-//         store.isLoggedIn = false;
-//     },
-//     setLoggedIn(status) {
-//         store.isLoggedIn = status;
-//     }
-// }
-
 // export useUserStore('user', {
 //     state: () => ({
 //         email: '',

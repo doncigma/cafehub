@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { store } from '../stores';
+import { store } from '../stores/userStore';
 import Joi from 'joi'
 
 const schema = Joi.object({
