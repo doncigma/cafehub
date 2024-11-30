@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { store } from '../stores/userStore';
 import { SubmitReview } from '~/utils/apiHandler';
-// import { NuxtRating } from '~/.nuxt/components';
 import Joi from 'joi';
 
 const schema = Joi.object({
