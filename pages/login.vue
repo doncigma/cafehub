@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { methods } from '../stores/userStore';
+import { Login } from '~/utils/apiHandler';
 import Joi from 'joi'
 
 const schema = Joi.object({
