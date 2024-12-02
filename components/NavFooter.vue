@@ -1,7 +1,3 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
     <footer>
         <div class="flex flex-row bg-coffee-950 justify-center px-4 py-2">

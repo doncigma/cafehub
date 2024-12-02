@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { store, methods } from './stores/userStore';
 
 
 </script>

@@ -1,10 +1,10 @@
 interface StoreState {
-    email: string;
-    username: string;
+    email: string | null;
+    username: string | null;
     isLoggedIn: boolean;
 }
 
-export const store = reactive<StoreState>({
+const state = reactive<StoreState>({
     email: '',
     username: '',
     isLoggedIn: false,
@@ -16,38 +16,26 @@ interface StoreMethods {
     setLoggedIn: (status: boolean) => void;
 }
 
-export const methods: StoreMethods = {
+const methods: StoreMethods = {
     updateUser(email: string, username: string) {
-        store.email = email;
-        store.username = username;
-        store.isLoggedIn = true;
+        state.email = email;
+        state.username = username;
+        state.isLoggedIn = true;
     },
     clearUser() {
-        store.email = '';
-        store.username = '';
-        store.isLoggedIn = false;
+        state.email = '';
+        state.username = '';
+        state.isLoggedIn = false;
     },
     setLoggedIn(status) {
-        store.isLoggedIn = status;
+        state.isLoggedIn = status;
     }
 }
 
-// export useUserStore('user', {
-//     state: () => ({
-//         email: '',
-//         username: '',
-//         isLoggedIn: false,
-//     }),
-//     actions: {
-//         login(email: string, username: string) {
-//             this.email = email;
-//             this.username = username;
-//             this.isLoggedIn = true;
-//         },
-//         logout() {
-//             this.email = '';
-//             this.username = '',
-//                 this.isLoggedIn = false;
-//         },
-//     },
-// });
+export default function useUserStore() {
+    return {
+        state,
+        methods
+    }
+}
+

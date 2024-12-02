@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { store } from '../stores/userStore';
+import useUserStore from '../stores/userStore';
 
-const username = store.username;
+const userStore = useUserStore();
+const userState = userStore.state;
 
 const router = useRouter();
 function handleClick() {
@@ -20,7 +21,7 @@ function handleClick() {
                 
                 <!-- Username Greeting -->
                 <div class="text-white text-2xl md:text-3xl tracking-wide font-normal font-['Playfair Display'] mb-2">
-                    Hello<span v-if="username">, {{ username }}</span><span v-else>!</span>
+                    Hello<span v-if="userState.isLoggedIn">, {{ userState.username }}</span><span v-else>!</span>
                 </div>
             </div>
 
