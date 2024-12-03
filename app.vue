@@ -1,3 +1,8 @@
+<script setup lang="ts">
+
+
+</script>
+
 <template>
     <div class="bg-coffee-500 min-h-screen">
         <NuxtLayout>
