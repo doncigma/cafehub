@@ -89,7 +89,7 @@ export default defineEventHandler(async (event) => {
             const body = await getQuery(event);
             const cafeData = await prisma.cafe.findFirst({
                 select: {
-                    shop_name: false,
+                    shop_name: true,
                     shop_id: false,
                     average_stars: true,
                     DrinkOffered: true,

@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
             // define data
             const uData: LoginData = {
                 email: String(body.email),
-                username: String(body.username),
+                username: '',
                 password: String(body.Password)
             };
             response.data = uData;
@@ -104,7 +104,7 @@ export default defineEventHandler(async (event) => {
                  }
              });
              if (!loginSuccess?.Username) {
-                console.error("no username");
+                console.error("Account does not exist");
                  response.status = false;
                  return response;
              }
