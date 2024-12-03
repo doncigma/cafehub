@@ -28,7 +28,7 @@ const userStore = useUserStore();
 const router = useRouter();
 
 async function onLogin() {
-    const result = await Login(state.email, state.password);
+    const result = Login(state.email, state.password);
     if (result?.status) {
         userStore.methods.updateUser(result.data.email, result.data.username);
         userStore.methods.setLoggedIn(true);
