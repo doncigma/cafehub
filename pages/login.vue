@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import useUserStore from '~/stores/userStore';
-import { Login } from '~/utils/apiHandler';
+import useUserStore from '~/stores/userStore'
+import { Login } from '~/utils/apiHandler'
 import Joi from 'joi'
 
 const schema = Joi.object({
@@ -28,13 +28,18 @@ const userStore = useUserStore();
 const router = useRouter();
 
 async function onLogin() {
+    // $fetch('api/login', {
+    //     method: 'GET',
+    //     body: { email: 'GregPaul@gmail.com', password: 'Password' }
+    // });
+
     const result = Login(state.email, state.password);
+    console.log(result)
     if (result?.status) {
         userStore.methods.updateUser(result.data.email, result.data.username);
         userStore.methods.setLoggedIn(true);
-        
         setTimeout(() => {
-            router.push('/index');
+            router.push('/');
         }, 1000);
     }
     else {
@@ -48,19 +53,19 @@ definePageMeta({
 </script>
 
 <template>
-    <div>
+    <div class="flex flex-col items-center space-y-2">
         <!-- Login -->
         <div>
             <span class="text-lg md:text-xl">Login</span>
         </div>
 
         <!-- Login Form -->
-        <div class="flex px-4 items-center">
+        <div class="flex flex-col px-4 space-y-2 items-center">
             <!-- Error Message -->
-            <UTextarea v-if="state.errorMsg">{{ state.errorMsg }}</UTextarea>
+            <p class="text-red-700" v-if="state.errorMsg">{{ state.errorMsg }}</p>
 
             <!-- Form -->
-            <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4" @submit="onLogin">
+            <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4">
                 <UFormGroup name="email" label="Email">
                     <UInput v-model="state.email" />
                 </UFormGroup>
@@ -69,8 +74,9 @@ definePageMeta({
                     <UInput v-model="state.password" type="password" />
                 </UFormGroup>
 
-                <UButton type="submit">Log in</UButton>
             </UForm>
+
+            <UButton @click="onLogin">Log in</UButton>
         </div>
 
         <!-- Path to Signup -->
