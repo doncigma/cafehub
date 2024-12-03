@@ -77,7 +77,7 @@ definePageMeta({ layout: 'dashboard' });
 <template>
     <!-- Cafe Search -->
     <div v-if="!state.cafeSearched">
-        <UTextarea v-model="state.cafeName" @keyup.enter="search" placeholder="Search..." />
+        <UTextarea v-model="state.cafeName" @keyup.enter="search" placeholder="Search cafe's..." />
     </div>
 
     <!-- Cafe Display -->
