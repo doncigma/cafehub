@@ -55,7 +55,7 @@ function logAtmosphereRating(event: number) {
 
 // Cafe Search
 async function search(cafeName: string) {
-    const result = await GetCafeData(cafeName);
+    const result = await GetCafeData(cafeName.toLowerCase());
     if (result.status) {
         state.cafeName = result.data.cafeName;
         state.cafeDrinks = result.data.cafeDrinks;
@@ -63,7 +63,7 @@ async function search(cafeName: string) {
         state.cafeSearched = true;
     }
     else {
-        state.errorMsg = "Could not get list of cafe's. Please try again later.";
+        state.errorMsg = "That cafe does not exist.";
         state.cafeName = '';
     }
 }
