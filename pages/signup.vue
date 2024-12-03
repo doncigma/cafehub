@@ -30,7 +30,7 @@ const router = useRouter();
 
 async function onSignup() {
     const result = await CreateAccount(state.email, state.password, state.username);
-    if (result.status) {
+    if (result?.status) {
         userStore.methods.updateUser(result.data.email, result.data.username);
         userStore.methods.setLoggedIn(true);
 
