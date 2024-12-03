@@ -2,6 +2,7 @@ import ws from 'ws'
 import { PrismaClient } from "@prisma/client"
 import { PrismaNeon } from '@prisma/adapter-neon'
 import { Pool, neonConfig } from '@neondatabase/serverless'
+import { Response, LoginData } from '~/types/response'
 
 
 const PrismaClientSingleton = () => {
@@ -12,20 +13,7 @@ const PrismaClientSingleton = () => {
     const adapter = new PrismaNeon(pool);
     const prisma = new PrismaClient({ adapter });
 
-
     return prisma;
-
-}
-
-interface LoginData {
-    email: string,
-    username: string,
-    password: string
-}
-
-interface Response {
-    status: boolean,
-    data: LoginData
 }
 
 const prisma = PrismaClientSingleton();
@@ -33,7 +21,7 @@ const prisma = PrismaClientSingleton();
 export default defineEventHandler(async (event) => {
     const method = event.node.req.method;
 
-    let response: Response = {
+    const response: Response = {
         status: false,
         data: {
             email: '',
@@ -42,13 +30,13 @@ export default defineEventHandler(async (event) => {
         }
     };
 
-    if (method === "POST") {
+    if (method === "GET") {
         try {
             // get args from body
             const body = await readBody(event);
 
             if (!body || !body.email || !body.password) {
-                return response;
+                throw new Error("Fetch readBody failed");
             }
 
             // define data
@@ -67,14 +55,15 @@ export default defineEventHandler(async (event) => {
                 }
             });
             if (!loginSuccess) {
-                response.status = false;
-                return response;
+                throw new Error("Login unsuccessful");
             }
+
             response.status = true;
             return response;
         }
         catch (error) {
-            let fail: Response = {
+            console.error(error);
+            const fail: Response = {
                 status: false,
                 data: {
                     email: '',
@@ -86,36 +75,48 @@ export default defineEventHandler(async (event) => {
         }
 
     }
-// pretty sure we dont need this, as login will only ever be get, just log error if method is GET
-    else if (method === "GET") {
-        try {
-            let query = getQuery(event)
-
-            if (!query || !query.password || !query.email) {
-                return response;
+    else {
+        console.error("Method cannot be POST on a login fetch")
+        const fail: Response = {
+            status: false,
+            data: {
+                email: '',
+                username: '',
+                password: ''
             }
-            const uData: LoginData = {
-                email: String(query.userEmail),
-                username: String(query.username),
-                password: String(query.userPassword),
-            };
-            response.data = uData;
-            const loginSuccess = await prisma.users.findFirst({
-                where: {
-                    email: uData.email,
-                    Password: uData.password
-                }
-            });
-            if (!loginSuccess) {
-                response.status = false;
-                return response;
-            }
-            response.status = true;
-            return response;
-        }
-        catch (error) {
-            response.status = false;
-            return response;
-        }
+        };
+        return fail;
     }
-})
+// VV pretty sure we dont need this, as login will only ever be get, just log error if method is POST VV
+//     else if (method === "GET") {
+//         try {
+//             let query = getQuery(event)
+
+//             if (!query || !query.password || !query.email) {
+//                 return response;
+//             }
+//             const uData: LoginData = {
+//                 email: String(query.userEmail),
+//                 username: String(query.username),
+//                 password: String(query.userPassword),
+//             };
+//             response.data = uData;
+//             const loginSuccess = await prisma.users.findFirst({
+//                 where: {
+//                     email: uData.email,
+//                     Password: uData.password
+//                 }
+//             });
+//             if (!loginSuccess) {
+//                 response.status = false;
+//                 return response;
+//             }
+//             response.status = true;
+//             return response;
+//         }
+//         catch (error) {
+//             response.status = false;
+//             return response;
+//         }
+//     }
+});
