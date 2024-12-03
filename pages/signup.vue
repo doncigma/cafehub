@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import useUserStore from '~/stores/userStore';
-import { CreateAccount } from '~/utils/apiHandler';
+import useUserStore from '~/stores/userStore'
+import { CreateAccount } from '~/utils/apiHandler'
 import Joi from 'joi'
 
 const schema = Joi.object({
@@ -29,7 +29,14 @@ const userStore = useUserStore();
 const router = useRouter();
 
 async function onSignup() {
+    // const response = await $fetch("/api/createAccount", {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: { email: state.email, password: state.password, username: state.username }
+    // });
+
     const result = await CreateAccount(state.email, state.password, state.username);
+    console.log('log: ', result)
     if (result?.status) {
         userStore.methods.updateUser(result.data.email, result.data.username);
         userStore.methods.setLoggedIn(true);
@@ -55,12 +62,12 @@ definePageMeta({
             <span class="text-lg md:text-xl font-bold text-darkcaramel">Signup</span>
         </div>
 
-        <div class="flex px-4 items-center">
+        <div class="flex flex-col px-4 space-y-2 items-center">
             <!-- Account Creation Error -->
-            <UTextarea v-if="state.errorMsg">{{ state.errorMsg }}</UTextarea>
+            <p class="text-red-700" v-if="state.errorMsg">{{ state.errorMsg }}</p>
 
             <!-- Signup Form -->
-            <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4" @submit="onSignup">
+            <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4">
                 <UFormGroup name="username" label="Username">
                     <UInput v-model="state.username" />
                 </UFormGroup>
@@ -73,8 +80,8 @@ definePageMeta({
                     <UInput v-model="state.password" type="password" />
                 </UFormGroup>
 
-                <UButton type="submit">Sign up</UButton>
             </UForm>
+            <UButton @click="onSignup">Sign up</UButton>
         </div>
 
         <!-- Path to Login -->

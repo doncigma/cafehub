@@ -1,9 +1,9 @@
 export function Login(email, password) {
     try {
         const response = useFetch("/api/login", {
-            method: "POST",
+            method: "GET",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password })
+            body: { bemail: email, bpassword: password }
         });
 
         if (!response.status) {
@@ -20,12 +20,12 @@ export function Login(email, password) {
 
 // ^^ UP TO DATE ^^
 
-export async function CreateAccount(userEmail, userPassword, userName) {
+export async function CreateAccount(email, password, username) {
     try {
-        const response = await useFetch("/api/createAccount", {
+        const response = await $fetch("/api/createAccount", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userEmail, userPassword, userName })
+            body: { bemail: email, bpassword: password, busername: username }
         });
 
         if (!response.ok) {
