@@ -3,18 +3,20 @@ import { PrismaClient } from "@prisma/client"
 import { PrismaNeon } from '@prisma/adapter-neon'
 import {Pool, neonConfig} from '@neondatabase/serverless'
 
+
 const PrismaClientSingleton = () => {
+   
     neonConfig.webSocketConstructor = ws;
     const connectionString = 'postgresql://neondb_owner:HGgkcTsP8CO9@ep-empty-scene-a6d4mg1t-pooler.us-west-2.aws.neon.tech/neondb?sslmode=require'
 
     const pool = new Pool({connectionString});
     const adapter = new PrismaNeon(pool);
     const prisma = new PrismaClient({ adapter });
+    
 
     return prisma;
         
 }
-
 const prisma = PrismaClientSingleton()
 
 
@@ -37,7 +39,7 @@ async function CreateUser(Username, Password, Email) {
     return user;
 }
 
-CreateUser("GregPaul", "Password", "GregPaul@gmail.com");
+CreateUser("jDoe", "Password", "jDoe@example.com");
 
 //let names = GetCafeNames();
 

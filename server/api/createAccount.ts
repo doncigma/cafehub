@@ -2,7 +2,8 @@ import ws from 'ws'
 import { PrismaClient } from "@prisma/client"
 import { PrismaNeon } from '@prisma/adapter-neon'
 import {Pool, neonConfig} from '@neondatabase/serverless'
-import { resolveTripleslashReference } from 'typescript';
+
+
 
 const PrismaClientSingleton = () => {
     neonConfig.webSocketConstructor = ws;
@@ -11,6 +12,7 @@ const PrismaClientSingleton = () => {
     const pool = new Pool({connectionString});
     const adapter = new PrismaNeon(pool);
     const prisma = new PrismaClient({ adapter });
+    
 
     return prisma;
         
@@ -30,8 +32,8 @@ export default defineEventHandler(async (event) => {
         // get args from body
         const body = await readBody(event);
 
-        if (!body || !body.name) {
-            return { error: 'Missing required parameters' };
+        if (!body || !body.userName) {
+            return response;
         }
         // define data
         const uData = {
@@ -58,7 +60,7 @@ export default defineEventHandler(async (event) => {
         let query = getQuery(event)
         
         if (!query|| !query.userName || !query.userPassword || !query.userEmail) {
-            return { error: 'Missing required parameters' };
+            return response;
         }
         const uData  = {
             Username: String(query.userName),
