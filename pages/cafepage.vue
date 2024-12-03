@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import useUserStore from '~/stores/userStore';
-import { SubmitReview } from '~/utils/apiHandler';
-import Joi from 'joi';
+import useUserStore from '~/stores/userStore'
+import { SubmitReview } from '~/utils/apiHandler'
+import Joi from 'joi'
 
 // Page State
 const state = reactive({
     errorMsg: '',
-    rating: 0,
+    ratings: {
+        taste: 0,
+        service: 0,
+        atmosphere: 0
+    },
     reviewContent: '',
     reviewMsg: '',
     cafeName: '',
@@ -31,12 +35,22 @@ const validate = (state: any) => {
 
 // Review Functions
 function clearReview() {
-    state.rating = 0;
+    state.ratings.taste = 0;
+    state.ratings.service = 0;
+    state.ratings.atmosphere = 0;
     state.reviewContent = '';
 }
 
-function logRating(event: number) {
-    state.rating = event;
+function logTasteRating(event: number) {
+    state.ratings.taste = event;
+}
+
+function logServiceRating(event: number) {
+    state.ratings.service = event;
+}
+
+function logAtmosphereRating(event: number) {
+    state.ratings.atmosphere = event;
 }
 
 // Cafe Search
@@ -49,7 +63,7 @@ async function search(cafeName: string) {
         state.cafeSearched = true;
     }
     else {
-        state.errorMsg = "Could not get list of cafe's. Please try again later."
+        state.errorMsg = "Could not get list of cafe's. Please try again later.";
         state.cafeName = '';
     }
 }
@@ -61,12 +75,12 @@ async function onSubmit() {
     state.reviewMsg = '';
 
     const user = userStore.methods.getUser();
-    const result = await SubmitReview(user.username, state.rating, state.reviewContent);
+    const result = await SubmitReview(user.username, state.ratings, state.reviewContent);
     if (result?.status) {
-        state.reviewMsg = 'Review submitted!'
+        state.reviewMsg = 'Review submitted!';
     }
     else {
-        state.errorMsg = "There was a problem submitting this review. Please try again later."
+        state.errorMsg = "There was a problem submitting this review. Please try again later.";
         state.reviewMsg = '';
     }
 }
@@ -77,15 +91,16 @@ definePageMeta({ layout: 'dashboard' });
 <template>
     <!-- Cafe Search -->
     <div v-if="!state.cafeSearched">
+        <p>Search for your favorite cafe!</p>
         <UTextarea v-model="state.cafeName" @keyup.enter="search" placeholder="Search cafe's..." />
     </div>
 
     <!-- Cafe Display -->
-    <div v-if="state.cafeSearched">
+    <div class="flex flex-col justify-center items-center" v-if="state.cafeSearched">
         <h1>{{ state.cafeName }}</h1>
         
         <!-- Cafe Tables -->
-        <div>
+        <div class="flex justify-start items-center">
             <!-- Drinks -->
             <UTable label="Drinks" :rows="state.cafeDrinks" />
 
@@ -94,7 +109,7 @@ definePageMeta({ layout: 'dashboard' });
         </div>
 
         <!-- Cafe Review -->
-        <div class="items-center">
+        <div class="flex justify-center items-center">
             <!-- Login Message -->
             <div v-if="!userStore.methods.getLoggedIn()" class="px-4">
                 To leave a review, you must log in, first! Log in <NuxtLink to="/login"
@@ -102,7 +117,7 @@ definePageMeta({ layout: 'dashboard' });
             </div>
 
             <!-- Popout -->
-            <div class="">
+            <div class="flex justify-center items-center">
                 <UPopover v-if="userStore.methods.getLoggedIn()" overlay>
                     <UButton label="Add a review" @click="clearReview"
                         trailing-icon="i-heroicons-chevron-down-20-solid" />
@@ -118,7 +133,13 @@ definePageMeta({ layout: 'dashboard' });
                                 <!-- Form -->
                                 <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4"
                                     @submit="onSubmit">
-                                    <NuxtRating @rating-selected="logRating" :read-only="false" :rating-value="0"
+                                    <NuxtRating @rating-selected="logTasteRating" :read-only="false" :rating-value="0"
+                                        :rating-step="1" />
+
+                                    <NuxtRating @rating-selected="logServiceRating" :read-only="false" :rating-value="0"
+                                        :rating-step="1" />
+
+                                    <NuxtRating @rating-selected="logAtmosphereRating" :read-only="false" :rating-value="0"
                                         :rating-step="1" />
 
                                     <UFormGroup name="reviewContent" label="Review">
