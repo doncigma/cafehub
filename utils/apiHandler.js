@@ -9,9 +9,6 @@ export function Login(email, password) {
         if (!response.status) {
             throw new Error("Login failed");
         }
-        const status = response.data.value.status;
-        const data = response.data.value.data;
-
         return response.data.value;
     }
     catch (error) {
@@ -34,12 +31,11 @@ export async function CreateAccount(userEmail, userPassword, userName) {
             throw new Error("Account creation failed");
         }
 
-        const data = await response.json();
-        return data.success ? "success" : "fail";
+        return response.data.value
     }
     catch (error) {
         console.error(error);
-        return "fail";
+        return null;
     }
 }
 
