@@ -78,19 +78,19 @@ export default defineEventHandler(async (event) => {
 // VV pretty sure we dont need this, as login will only ever be get, just log error if method is POST VV
      else if (method === "POST") {
          try {
-             let query = await readBody(event)
+             let body = await readBody(event)
 
-             if (!query || !query.bpassword || !query.bemail) {
+             if (!body || !body.bpassword || !body.bemail) {
                 console.error("top")
-                if (!query.bemail) {
-                    console.error("no query")
+                if (!body.bemail) {
+                    console.error("no body")
                 }
                  return response;
              }
              const uData: LoginData = {
-                 email: String(query.bemail),
+                 email: String(body.bemail),
                  username: '',
-                 password: String(query.bpassword),
+                 password: String(body.bpassword),
              };
              const loginSuccess = await prisma.users.findFirst({
                 select: {
