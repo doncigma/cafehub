@@ -9,7 +9,7 @@ function handleClick() {
 
 <template>
     <header>
-        <div class="flex flex-row bg-darkcaramel justify-between items-center px-2 py-2">
+        <div class="flex flex-row bg-coffee-950 justify-between items-center px-2 py-2">
             <!-- Back link -->
             <div class="px-4">
                 <button @click="handleClick" class="text-coffee-50 hover:text-coffee-300 hover:underline">Back</button>
@@ -17,7 +17,7 @@ function handleClick() {
 
             <!-- Logo -->
             <div class="flex w-1/4 items-end md:w-auto">
-                <NuxtImg class="flex object-cover" src="logos/CafeHub-logo-trans.png" />
+                <NuxtImg class="flex object-cover" :src="$config.public.transLogoSrc" />
             </div>
         </div>
     </header>

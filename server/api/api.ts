@@ -1,3 +1,5 @@
+// Archived API functions from previous dependencies.
+// If app moves back to a SQL database, can be re-implemented
 export function APILogin(_username: string, _password: string) {
     let promise = $fetch("/api/login", {
         body: {

@@ -1,5 +1,9 @@
 <template>
-    <BareHeader />
-    <slot />
-    <BareFooter />
+    <div class="flex flex-col min-h-screen">
+        <BareHeader />
+        <main class="flex-1">
+            <slot />
+        </main>
+        <BareFooter />
+    </div>
 </template>
