@@ -78,15 +78,19 @@ export default defineEventHandler(async (event) => {
 // VV pretty sure we dont need this, as login will only ever be get, just log error if method is POST VV
      else if (method === "POST") {
          try {
-             let query = getQuery(event)
+             let body = await readBody(event)
 
-             if (!query || !query.bpassword || !query.bemail) {
+             if (!body || !body.bpassword || !body.bemail) {
+                console.error("top")
+                if (!body.bemail) {
+                    console.error("no body")
+                }
                  return response;
              }
              const uData: LoginData = {
-                 email: String(query.bemail),
+                 email: String(body.bemail),
                  username: '',
-                 password: String(query.bpassword),
+                 password: String(body.bpassword),
              };
              const loginSuccess = await prisma.users.findFirst({
                 select: {
@@ -99,7 +103,8 @@ export default defineEventHandler(async (event) => {
                      Password: uData.password
                  }
              });
-             if (!loginSuccess) {
+             if (!loginSuccess?.Username) {
+                console.error("no username");
                  response.status = false;
                  return response;
              }
@@ -109,10 +114,12 @@ export default defineEventHandler(async (event) => {
                 password: loginSuccess.Password
              }
              response.status = true;
+             console.log('login.ts: ', response)
              return response;
          }
          catch (error) {
              response.status = false;
+             console.error("oopsie");
              return response;
          }
      }
