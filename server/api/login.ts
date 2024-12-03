@@ -75,48 +75,45 @@ export default defineEventHandler(async (event) => {
         }
 
     }
-    else {
-        console.error("Method cannot be POST on a login fetch")
-        const fail: Response = {
-            status: false,
-            data: {
-                email: '',
-                username: '',
-                password: ''
-            }
-        };
-        return fail;
-    }
 // VV pretty sure we dont need this, as login will only ever be get, just log error if method is POST VV
-//     else if (method === "GET") {
-//         try {
-//             let query = getQuery(event)
+     else if (method === "POST") {
+         try {
+             let query = getQuery(event)
 
-//             if (!query || !query.password || !query.email) {
-//                 return response;
-//             }
-//             const uData: LoginData = {
-//                 email: String(query.userEmail),
-//                 username: String(query.username),
-//                 password: String(query.userPassword),
-//             };
-//             response.data = uData;
-//             const loginSuccess = await prisma.users.findFirst({
-//                 where: {
-//                     email: uData.email,
-//                     Password: uData.password
-//                 }
-//             });
-//             if (!loginSuccess) {
-//                 response.status = false;
-//                 return response;
-//             }
-//             response.status = true;
-//             return response;
-//         }
-//         catch (error) {
-//             response.status = false;
-//             return response;
-//         }
-//     }
+             if (!query || !query.bpassword || !query.bemail) {
+                 return response;
+             }
+             const uData: LoginData = {
+                 email: String(query.bemail),
+                 username: '',
+                 password: String(query.bpassword),
+             };
+             const loginSuccess = await prisma.users.findFirst({
+                select: {
+                    email: true,
+                    Username: true,
+                    Password: true
+                },
+                 where: {
+                     email: uData.email,
+                     Password: uData.password
+                 }
+             });
+             if (!loginSuccess) {
+                 response.status = false;
+                 return response;
+             }
+             response.data = {
+                email: loginSuccess.email,
+                username: loginSuccess.Username,
+                password: loginSuccess.Password
+             }
+             response.status = true;
+             return response;
+         }
+         catch (error) {
+             response.status = false;
+             return response;
+         }
+     }
 });

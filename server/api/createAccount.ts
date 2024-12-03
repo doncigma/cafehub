@@ -41,9 +41,9 @@ export default defineEventHandler(async (event) => {
 
             // define data
             const uData = {
-                Username: body.userName,
-                Password: body.userPassword,
-                email: body.userEmail
+                Username: body.busername,
+                Password: body.bpassword,
+                email: body.bemail
             };
 
             // create user
@@ -83,9 +83,9 @@ export default defineEventHandler(async (event) => {
 
             response.status = true;
             response.data = {
-                email: String(body.userEmail),
-                username: String(body.userName),
-                password: String(body.userPassword)
+                email: String(body.bemail),
+                username: String(body.busername),
+                password: String(body.bpassword)
             };
             return response;
         }

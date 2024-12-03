@@ -1,7 +1,7 @@
 export function Login(email, password) {
     try {
-        const response = useFetch("/api/login", {
-            method: "GET",
+        const response = $fetch("/api/login", {
+            method: "POST",
             headers: { "Content-Type": "application/json" },
             body: { bemail: email, bpassword: password }
         });
@@ -42,7 +42,7 @@ export async function CreateAccount(email, password, username) {
 
 export async function GetCafeList(cafeName) {
     try {
-        const response = await useFetch("/api/getCafeList", {
+        const response = await $fetch("/api/getCafeList", {
             method: "GET",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(cafeName)
@@ -63,7 +63,7 @@ export async function GetCafeList(cafeName) {
 
 export async function GetCafeData(cafeName) {
     try {
-        const response = await useFetch("/api/getCafeData", {
+        const response = await $fetch("/api/getCafeData", {
             method: "GET",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(cafeName)
@@ -84,7 +84,7 @@ export async function GetCafeData(cafeName) {
 
 export async function SubmitReview(userEmail, userPassword, userName, { rating: [], text: undefined }) {
     try {
-        const response = await useFetch("/api/submitReview", {
+        const response = await $fetch("/api/submitReview", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ userEmail, userPassword, userName })
