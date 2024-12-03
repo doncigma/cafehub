@@ -1,8 +1,3 @@
-// response: {
-//     status: bool,
-//     data: {}
-// }
-
 export async function Login(email, password) {
     try {
         const response = await fetch("/api/login", {
@@ -87,12 +82,12 @@ export async function GetCafeData(cafeName) {
     }
 }
 
-export async function SubmitReview(userEmail, userPassword, userFirstName, userLastName, {rating: [], text: undefined}) {
+export async function SubmitReview(userEmail, userPassword, userName, {rating: [], text: undefined}) {
     try {
         const response = await fetch("/api/submitReview", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userEmail, userPassword, userFirstName, userLastName })
+            body: JSON.stringify({ userEmail, userPassword, userName })
         });
 
         if (!response.ok) {
