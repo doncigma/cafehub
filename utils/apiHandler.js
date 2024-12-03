@@ -5,8 +5,9 @@ export function Login(email, password) {
             headers: { "Content-Type": "application/json" },
             body: { bemail: email, bpassword: password }
         });
+        console.log('apihandler: ', response.data.value)
 
-        if (!response.status) {
+        if (!response.ok) {
             throw new Error("Login failed");
         }
 

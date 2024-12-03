@@ -78,9 +78,13 @@ export default defineEventHandler(async (event) => {
 // VV pretty sure we dont need this, as login will only ever be get, just log error if method is POST VV
      else if (method === "POST") {
          try {
-             let query = getQuery(event)
+             let query = await readBody(event)
 
              if (!query || !query.bpassword || !query.bemail) {
+                console.error("top")
+                if (!query.bemail) {
+                    console.error("no query")
+                }
                  return response;
              }
              const uData: LoginData = {
@@ -99,7 +103,8 @@ export default defineEventHandler(async (event) => {
                      Password: uData.password
                  }
              });
-             if (!loginSuccess) {
+             if (!loginSuccess?.Username) {
+                console.error("no username");
                  response.status = false;
                  return response;
              }
@@ -109,10 +114,12 @@ export default defineEventHandler(async (event) => {
                 password: loginSuccess.Password
              }
              response.status = true;
+             console.log('login.ts: ', response)
              return response;
          }
          catch (error) {
              response.status = false;
+             console.error("oopsie");
              return response;
          }
      }
