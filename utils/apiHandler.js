@@ -12,19 +12,15 @@ export function Login(email, password) {
         const status = response.data.value.status;
         const data = response.data.value.data;
 
-        return {
-            status,
-            data
-        };
+        return response.data.value;
     }
     catch (error) {
         console.error(error);
-        return {
-            status: false,
-            data: {}
-        };
+        return null;
     }
 }
+
+// ^^ UP TO DATE ^^
 
 export async function CreateAccount(userEmail, userPassword, userName) {
     try {
