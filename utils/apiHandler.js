@@ -1,27 +1,29 @@
 export async function Login(email, password) {
     try {
-        const response = await fetch("/api/login", {
+        const response = await useFetch("/api/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
         });
 
-        if (!response.ok) {
+        if (!response.status) {
             throw new Error("Login failed");
         }
 
-        const data = await response.json();
-        return data.success ? "success" : "fail";
+        return response.data.value;
     }
     catch (error) {
         console.error(error);
-        return "fail";
+        return {
+            status: false,
+            data: {}
+        };
     }
 }
 
 export async function CreateAccount(userEmail, userPassword, userName) {
     try {
-        const response = await fetch("/api/createAccount", {
+        const response = await useFetch("/api/createAccount", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ userEmail, userPassword, userName })
@@ -42,14 +44,14 @@ export async function CreateAccount(userEmail, userPassword, userName) {
 
 export async function GetCafeList(cafeName) {
     try {
-        const response = await fetch("/api/getCafeList", {
+        const response = await useFetch("/api/getCafeList", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(cafeName)
         });
 
         if (!response.ok) {
-            throw new Error("Cafe list fetch failed");
+            throw new Error("Cafe list useFetch failed");
         }
 
         const data = await response.json();
@@ -63,14 +65,14 @@ export async function GetCafeList(cafeName) {
 
 export async function GetCafeData(cafeName) {
     try {
-        const response = await fetch("/api/getCafeData", {
+        const response = await useFetch("/api/getCafeData", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(cafeName)
         });
 
         if (!response.ok) {
-            throw new Error("Cafe data fetch failed");
+            throw new Error("Cafe data useFetch failed");
         }
 
         const data = await response.json();
@@ -84,7 +86,7 @@ export async function GetCafeData(cafeName) {
 
 export async function SubmitReview(userEmail, userPassword, userName, {rating: [], text: undefined}) {
     try {
-        const response = await fetch("/api/submitReview", {
+        const response = await useFetch("/api/submitReview", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ userEmail, userPassword, userName })
