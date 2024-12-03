@@ -1,6 +1,6 @@
-export async function Login(email, password) {
+export function Login(email, password) {
     try {
-        const response = await useFetch("/api/login", {
+        const response = useFetch("/api/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -9,8 +9,13 @@ export async function Login(email, password) {
         if (!response.status) {
             throw new Error("Login failed");
         }
+        const status = response.data.value.status;
+        const data = response.data.value.data;
 
-        return response.data.value;
+        return {
+            status,
+            data
+        };
     }
     catch (error) {
         console.error(error);
