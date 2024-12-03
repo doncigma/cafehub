@@ -13,9 +13,7 @@ const PrismaClientSingleton = () => {
     const adapter = new PrismaNeon(pool);
     const prisma = new PrismaClient({ adapter });
     
-
-    return prisma;
-        
+    return prisma; 
 }
 
 interface Response {
