@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://neondb_owner:HGgkcTsP8CO9@ep-empty-scene-a6d4mg1t-pooler.us-west-2.aws.neon.tech/neondb?sslmode=require"
+}
+
+model Cafe {
+  shop_id       Int            @id @default(autoincrement())
+  shop_name     String
+  average_stars Float
+  DrinkOffered  DrinkOffered[]
+  Rating        Rating[]
+
+  @@index([shop_id])
+}
+
+model DrinkOffered {
+  drink_name String
+  cafe_id    Int
+  Cafe       Cafe   @relation(fields: [cafe_id], references: [shop_id])
+  Drinks     Drinks @relation(fields: [drink_name], references: [drink_name])
+
+  @@id([drink_name, cafe_id])
+}
+
+model Drinks {
+  drink_name   String         @unique
+  price        Float
+  DrinkOffered DrinkOffered[]
+
+  @@index([drink_name])
+}
+
+model Rating {
+  rating_id   Int           @id @default(autoincrement())
+  stars       Float
+  comment     String?
+  UpVotes     Int           @default(0)
+  DownVotes   Int           @default(0)
+  cafe_id     Int?
+  Cafe        Cafe?         @relation(fields: [cafe_id], references: [shop_id])
+  UserRatings UserRatings[]
+
+  @@index([rating_id])
+}
+
+model UserRatings {
+  user_id   Int
+  rating_id Int
+  Rating    Rating @relation(fields: [rating_id], references: [rating_id])
+  Users     Users  @relation(fields: [user_id], references: [user_id])
+
+  @@id([user_id, rating_id])
+}
+
+model Users {
+  user_id     Int           @id @default(autoincrement())
+  Username    String        @unique
+  Password    String
+  email       String
+  UserRatings UserRatings[]
+
+  @@index([user_id])
+}
+

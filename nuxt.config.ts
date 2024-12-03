@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             transLogoSrc: 'logos/CafeHub-logo-trans.png',
-            noTextLogoSrc: 'logos/CafeHub-no-text.png'
+            noTextLogoSrc: 'logos/CafeHub-no-text.png',
         },
     },
     components: true,
