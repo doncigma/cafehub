@@ -1,7 +1,7 @@
 <script lang="ts">
 import useUserStore from '~/stores/userStore';
 
-const userStore = useUserStore();
+let userStore = useUserStore();
 
 export default {
     data() {
@@ -16,7 +16,7 @@ export default {
                 { user: 'Rachel', comment: 'This is the best coffee I’ve ever had. A great place for studying.', cafe: 'Mercury Coffee Co.', likes: 3, liked: false }
             ],
             maxHearts: 1, // Set the maximum number of hearts displayed
-            username: userStore.state.username
+            username: userStore.methods.getUser
         };
     },
     methods: {

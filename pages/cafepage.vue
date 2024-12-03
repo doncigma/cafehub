@@ -8,6 +8,7 @@ const state = reactive({
     errorMsg: '',
     rating: 0,
     reviewContent: '',
+    reviewMsg: '',
     cafeName: '',
     cafeSearched: false,
     cafeDrinks: [], // array of objects
@@ -42,11 +43,9 @@ function logRating(event: number) {
 async function search(cafeName: string) {
     const result = await GetCafeData(cafeName);
     if (result.status) {
-        state.cafeData = result.data;
-
-        state.cafeName = cafeData.cafeName;
-        state.cafeDrinks = cafeData.cafeDrinks;
-        state.cafeReviews = cafeData.cafeReviews;
+        state.cafeName = result.data.cafeName;
+        state.cafeDrinks = result.data.cafeDrinks;
+        state.cafeReviews = result.data.cafeReviews;
         state.cafeSearched = true;
     }
     else {
@@ -57,14 +56,19 @@ async function search(cafeName: string) {
 
 // Update Store and Database
 const userStore = useUserStore();
-const userState = userStore.state;
 
 async function onSubmit() {
-    const result = await SubmitReview(userState.username, state.rating, state.reviewContent);
-    if (result.status) {
+    state.reviewMsg = '';
 
+    const user = userStore.methods.getUser();
+    const result = await SubmitReview(user.username, state.rating, state.reviewContent);
+    if (result.status) {
+        state.reviewMsg = 'Review submitted!'
     }
-    else state.errorMsg = "There was a problem submitting this review. Please try again later."
+    else {
+        state.errorMsg = "There was a problem submitting this review. Please try again later."
+        state.reviewMsg = '';
+    }
 }
 
 definePageMeta({ layout: 'dashboard' });
@@ -92,14 +96,14 @@ definePageMeta({ layout: 'dashboard' });
         <!-- Cafe Review -->
         <div class="items-center">
             <!-- Login Message -->
-            <div v-if="!userState.isLoggedIn" class="px-4">
+            <div v-if="!userStore.methods.getLoggedIn()" class="px-4">
                 To leave a review, you must log in, first! Log in <NuxtLink to="/login"
                     class="text-coffeewarm-950 font-bold hover:underline">here.</NuxtLink>
             </div>
 
             <!-- Popout -->
             <div class="">
-                <UPopover v-if="userState.isLoggedIn" overlay>
+                <UPopover v-if="userStore.methods.getLoggedIn()" overlay>
                     <UButton label="Add a review" @click="clearReview"
                         trailing-icon="i-heroicons-chevron-down-20-solid" />
 
@@ -108,8 +112,9 @@ definePageMeta({ layout: 'dashboard' });
                             <!-- Review Form -->
                             <div class="flex flex-col items-start px-4">
                                 <!-- Error Message -->
-                                <UTextarea v-if="state.errorMsg">{{ state.errorMsg }}</UTextarea>
-
+                                <div v-if="state.errorMsg">{{ state.errorMsg }}</div>
+                                <div v-if="state.reviewMsg">{{ state.reviewMsg }}</div>
+                                
                                 <!-- Form -->
                                 <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4"
                                     @submit="onSubmit">

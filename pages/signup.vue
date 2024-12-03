@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { methods } from '../stores/userStore';
+import useUserStore from '~/stores/userStore';
 import { CreateAccount } from '~/utils/apiHandler';
 import Joi from 'joi'
 
@@ -12,7 +12,8 @@ const schema = Joi.object({
 const state = reactive({
     email: '',
     password: '',
-    username: ''
+    username: '',
+    errorMsg: ''
 })
 
 const validate = (state: any) => {
@@ -23,20 +24,22 @@ const validate = (state: any) => {
     return errors;
 }
 
+// Update State and Database
+const userStore = useUserStore();
 const router = useRouter();
-var errorMsg = ref<string | null>(null);
+
 async function onSignup() {
     const result = await CreateAccount(state.email, state.password, state.username);
     if (result.status) {
-        methods.updateUser(state.email, state.username);
-        methods.setLoggedIn(true);
+        userStore.methods.updateUser(result.data.email, result.data.username);
+        userStore.methods.setLoggedIn(true);
 
         setTimeout(() => {
             router.push('/index');
         }, 1000);
     }
     else {
-        errorMsg.value = "That account may already exist. Please try logging in."
+        state.errorMsg = "That account may already exist. Please try logging in."
     }
 }
 
@@ -54,7 +57,7 @@ definePageMeta({
 
         <div class="flex px-4 items-center">
             <!-- Account Creation Error -->
-            <UTextarea v-if="errorMsg">{{ errorMsg }}</UTextarea>
+            <UTextarea v-if="state.errorMsg">{{ state.errorMsg }}</UTextarea>
 
             <!-- Signup Form -->
             <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4" @submit="onSignup">

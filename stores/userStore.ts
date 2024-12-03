@@ -1,6 +1,6 @@
 interface StoreState {
-    email: string | null;
-    username: string | null;
+    email: string;
+    username: string;
     isLoggedIn: boolean;
 }
 
@@ -11,12 +11,22 @@ const state = reactive<StoreState>({
 })
 
 interface StoreMethods {
+    getUser: () => {email: string, username: string};
     updateUser: (email: string, username: string) => void;
     clearUser: () => void;
+    getLoggedIn: () => boolean;
     setLoggedIn: (status: boolean) => void;
 }
 
 const methods: StoreMethods = {
+    getUser() {
+        let email = state.email;
+        let username = state.username;
+        return {
+            email,
+            username
+        }
+    },
     updateUser(email: string, username: string) {
         state.email = email;
         state.username = username;
@@ -26,6 +36,9 @@ const methods: StoreMethods = {
         state.email = '';
         state.username = '';
         state.isLoggedIn = false;
+    },
+    getLoggedIn() {
+        return state.isLoggedIn;
     },
     setLoggedIn(status) {
         state.isLoggedIn = status;
