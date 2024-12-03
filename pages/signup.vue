@@ -82,6 +82,7 @@ definePageMeta({
                 </UFormGroup>
 
             </UForm>
+            
             <UButton @click="onSignup">Sign up</UButton>
         </div>
 

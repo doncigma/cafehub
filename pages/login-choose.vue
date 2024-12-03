@@ -1,4 +1,4 @@
-<script>
+<script setup lang="ts">
 definePageMeta({
     layout: 'login'
 });
@@ -13,8 +13,8 @@ definePageMeta({
         <!-- Login button -->
         <div class="flex flex-col items-center justify-center space-y-1">
             <UButtonGroup size="xl" orientation="vertical" class="w-44 md:w-72 space-y-2">
-                <UButton color="" class="bg-coffee-950" to="/signup">Sign Up</UButton>
-                <UButton color="" class="bg-coffeewarm-700" to="/login">Login</UButton>
+                <UButton to="/signup">Sign Up</UButton>
+                <UButton to="/login">Login</UButton>
             </UButtonGroup>
         </div>
     </div>
