@@ -21,6 +21,7 @@ export function Login(email, password) {
 // ^^ UP TO DATE ^^
 
 export async function CreateAccount(userEmail, userPassword, userName) {
+    
     try {
         const response = await useFetch("/api/createAccount", {
             method: "POST",

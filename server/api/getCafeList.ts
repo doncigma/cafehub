@@ -31,8 +31,13 @@ export default defineEventHandler(async (event) => {
     if (method === "POST") {
 
         try {
-            // create user
-            const cafeList = await prisma.cafe.findMany()
+            
+            const cafeList = await prisma.cafe.findMany({
+                select: {
+                    shop_name: true
+                }
+            }
+            )
             response.data = cafeList;
             response.status = true;
             return response;
@@ -46,7 +51,11 @@ export default defineEventHandler(async (event) => {
     else if (method === "GET") {
 
         try {
-            const cafeList = await prisma.cafe.findMany();
+            const cafeList = await prisma.cafe.findMany({
+                select: {
+                    shop_name: true
+                }
+            });
             response.data = cafeList;
             response.status = true;
             return response;

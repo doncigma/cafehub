@@ -41,9 +41,9 @@ export default defineEventHandler(async (event) => {
 
             // define data
             const uData = {
-                Username: String(body.userName),
-                Password: String(body.userPassword),
-                email: String(body.userEmail)
+                Username: body.userName,
+                Password: body.userPassword,
+                email: body.userEmail
             };
             
             // create user
