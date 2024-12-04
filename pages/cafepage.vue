@@ -15,8 +15,8 @@ const state = reactive({
     reviewMsg: '',
     cafeName: '',
     cafeSearched: false,
-    cafeDrinks: [], // array of objects
-    cafeReviews: [],
+    cafeDrinks: [{}], // array of objects
+    cafeReviews: [{}],
 });
 
 // Form Setup
@@ -57,9 +57,9 @@ function logAtmosphereRating(event: number) {
 async function search(cafeName: string) {
     const result = await GetCafeData(cafeName.toLowerCase());
     if (result?.status) {
-        state.cafeName = result.data.cafeName;
-        state.cafeDrinks = result.data.cafeDrinks;
-        state.cafeReviews = result.data.cafeReviews;
+        state.cafeName = result.data.shop_name;
+        state.cafeDrinks = result.data.DrinkOffered;
+        state.cafeReviews = result.data.Rating;
         state.cafeSearched = true;
     }
     else {

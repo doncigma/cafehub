@@ -20,6 +20,7 @@ const PrismaClientSingleton = () => {
 interface Response {
     status: boolean,
     data: {
+        shop_name: string,
         average_stars: Number,
         DrinkOffered: { drink_name: string; cafe_id: number; }[],
         Rating: { 
@@ -80,6 +81,7 @@ export default defineEventHandler(async (event) => {
         let response : Response = {
             status: false,
             data: {
+                shop_name: "",
                 average_stars: 0,
                 DrinkOffered: [],
                 Rating: []
@@ -117,6 +119,7 @@ export default defineEventHandler(async (event) => {
         let fail : Response = {
             status: false,
             data: {
+                shop_name: '',
                 average_stars: 0,
                 DrinkOffered: [],
                 Rating: []

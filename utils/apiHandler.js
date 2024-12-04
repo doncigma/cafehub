@@ -77,7 +77,7 @@ export async function GetCafeData(cafeName) {
     }
     catch (error) {
         console.error(error);
-        return "fail";
+        return;
     }
 }
 
@@ -93,8 +93,8 @@ export async function SubmitReview(userEmail, userPassword, userName, { rating: 
             throw new Error("Review submission failed");
         }
 
-        const data = await response.json();
-        return data.success ? "success" : "fail";
+        
+        return response;
     }
     catch (error) {
         console.error(error);
