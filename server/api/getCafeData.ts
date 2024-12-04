@@ -99,9 +99,10 @@ export default defineEventHandler(async (event) => {
                     Rating: true
                     },
                     where: {
-                        shop_name: String(body.cafeName)
+                        shop_name: body.cafeName
                         }
             })
+            console.log(cafeData?.shop_name)
             if (cafeData) {
                 response.data = cafeData;
             }
@@ -113,18 +114,5 @@ export default defineEventHandler(async (event) => {
             response.status = false;
             return response;
         }
-    }
-    else if (method === "POST") {
-        console.error("Method cannot be POST on a GetCafeData fetch");
-        let fail : Response = {
-            status: false,
-            data: {
-                shop_name: '',
-                average_stars: 0,
-                DrinkOffered: [],
-                Rating: []
-            }
-        };
-        return fail;
     }
 })

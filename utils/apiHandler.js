@@ -64,7 +64,7 @@ export async function GetCafeList(cafeName) {
 export async function GetCafeData(cafeName) {
     try {
         const response = await $fetch("/api/getCafeData", {
-            method: "GET",
+            method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(cafeName)
         });
