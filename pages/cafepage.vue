@@ -15,8 +15,8 @@ const state = reactive({
     reviewMsg: '',
     cafeName: '',
     cafeSearched: false,
-    cafeDrinks: [], // array of objects
-    cafeReviews: [],
+    cafeDrinks: [{}], // array of objects
+    cafeReviews: [{}],
 });
 
 // Form Setup
@@ -56,10 +56,10 @@ function logAtmosphereRating(event: number) {
 // Cafe Search
 async function search(cafeName: string) {
     const result = await GetCafeData(cafeName.toLowerCase());
-    if (result.status) {
-        state.cafeName = result.data.cafeName;
-        state.cafeDrinks = result.data.cafeDrinks;
-        state.cafeReviews = result.data.cafeReviews;
+    if (result?.status) {
+        state.cafeName = result.data.shop_name;
+        state.cafeDrinks = result.data.DrinkOffered;
+        state.cafeReviews = result.data.Rating;
         state.cafeSearched = true;
     }
     else {
@@ -90,9 +90,10 @@ definePageMeta({ layout: 'dashboard' });
 
 <template>
     <!-- Cafe Search -->
-    <div v-if="!state.cafeSearched">
+    <div class="flex flex-col items-center" v-if="!state.cafeSearched">
         <p>Search for your favorite cafe!</p>
-        <UTextarea v-model="state.cafeName" @keyup.enter="search" placeholder="Search cafe's..." />
+        <UTextarea v-model="state.cafeName" @keydown.enter="search" placeholder="Search cafe's..." />
+        <UButton @click="search">Search</UButton>
     </div>
 
     <!-- Cafe Display -->
