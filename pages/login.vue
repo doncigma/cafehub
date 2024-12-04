@@ -3,12 +3,14 @@ import useUserStore from '~/stores/userStore'
 import { Login } from '~/utils/apiHandler'
 import Joi from 'joi'
 
+// Form schema
 const schema = Joi.object({
     email: Joi.string().required(),
     password: Joi.string().min(8).required(),
     username: Joi.string()
 })
 
+// Page state
 const state = reactive({
     email: '',
     password: '',
@@ -16,14 +18,13 @@ const state = reactive({
     errorMsg: ''
 });
 
-// Update State and Database
+// Update state and database
 const userStore = useUserStore();
 const router = useRouter();
 
 async function onLogin() {
 
     const result = await Login(state.email, state.password);
-    console.log(result)
     if (result?.status) {
         userStore.methods.updateUser(result.data.email, result.data.username);
         userStore.methods.setLoggedIn(true);

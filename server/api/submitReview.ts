@@ -60,9 +60,9 @@ export default defineEventHandler(async (event) => {
                 user_id: user.user_id,
                 cafe_id: cafe.shop_id,
                 comment: body.bcontent,
-                tasteRating: body.ratings.taste,
-                serviceRating: body.ratings.service,
-                AtmosphereRating: body.ratings.atmosphere
+                tasteRating: body.bratings.taste,
+                serviceRating: body.bratings.service,
+                AtmosphereRating: body.bratings.atmosphere
             };
 
             // Try write

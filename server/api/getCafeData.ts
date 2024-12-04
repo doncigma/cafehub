@@ -20,17 +20,17 @@ const prisma = PrismaClientSingleton();
 
 export default defineEventHandler(async (event) => {
     const method = event.node.req.method;
-    
+
     const response: CafeResponse = {
         status: false,
         data: {
             cafeName: '',
             averageStars: 0,
-            DrinkOffered: [{
+            Drinks: [{
                 drink_name: '',
                 cafe_id: 0
             }],
-            Rating: [{
+            Review: [{
                 rating_id: 0,
                 user_id: 0,
                 cafe_id: 0,
@@ -50,7 +50,7 @@ export default defineEventHandler(async (event) => {
             if (!body) {
                 throw new Error("getCafeData readBody failed");
             }
-            
+
             // Fetch data
             const cafeData = await prisma.cafe.findFirst({
                 select: {
@@ -66,21 +66,20 @@ export default defineEventHandler(async (event) => {
             });
 
             if (!cafeData) {
-                throw new Error('getCafeData query failed');
+                throw new Error('getCafeData user or cadeData query failed');
             }
 
             // Return
             response.data = {
                 cafeName: cafeData.shop_name,
                 averageStars: cafeData.average_stars,
-                DrinkOffered: cafeData.DrinkOffered,
-                Rating: cafeData.Rating
+                Drinks: cafeData.DrinkOffered,
+                Review: cafeData.Rating
             }
             response.status = true;
 
             return response;
         }
-
         catch (error) {
             console.error(error)
             return response;

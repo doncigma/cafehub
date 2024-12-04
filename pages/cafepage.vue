@@ -3,7 +3,13 @@ import useUserStore from '~/stores/userStore'
 import { SubmitReview } from '~/utils/apiHandler'
 import Joi from 'joi'
 
-// Page State
+// Form schema
+const schema = Joi.object({
+    rating: Joi.number(),
+    reviewContent: Joi.string().min(10).max(500).required(),
+});
+
+// Page state
 const state = reactive({
     errorMsg: '',
     ratings: {
@@ -19,13 +25,7 @@ const state = reactive({
     cafeReviews: [{}]
 });
 
-// Form Setup
-const schema = Joi.object({
-    rating: Joi.number(),
-    reviewContent: Joi.string().min(10).max(500).required(),
-});
-
-// Review Functions
+// Review functions
 function clearReview() {
     state.ratings.taste = 0;
     state.ratings.service = 0;
@@ -45,13 +45,13 @@ function logAtmosphereRating(event: number) {
     state.ratings.atmosphere = event;
 }
 
-// Cafe Search
+// Cafe search
 async function search() {
     const result = await GetCafeData(state.cafeName);
     if (result?.status) {
         state.cafeName = result.data.cafeName;
-        state.cafeDrinks = result.data.DrinkOffered;
-        state.cafeReviews = result.data.Rating;
+        state.cafeDrinks = result.data.Drinks;
+        state.cafeReviews = result.data.Review;
         state.cafeSearched = true;
     }
     else {
@@ -60,19 +60,19 @@ async function search() {
     }
 }
 
-// Update Store and Database
+// Update store and database
 const userStore = useUserStore();
 
 async function onSubmit() {
     state.reviewMsg = '';
-    
+
     const user = userStore.methods.getUser();
     const result = await SubmitReview(user.username, state.ratings, state.reviewContent);
     if (result?.status) {
         state.reviewMsg = 'Review submitted!';
     }
     else {
-        state.errorMsg = 'There was a problem submitting this review. Please try again later.';
+        state.errorMsg = 'There was a problem submitting this review.';
         state.reviewMsg = '';
     }
 }
@@ -93,7 +93,7 @@ definePageMeta({ layout: 'dashboard' });
         <h1>{{ state.cafeName }}</h1>
 
         <!-- Cafe Tables -->
-        <div class="flex flex-col justify-start items-center space-y-2">
+        <div class="flex flex-col md:flex-row justify-start items-center space-y-2 md:space-y-0 md:space-x-4">
             <!-- Drinks -->
             <UTable label="Drinks" :rows="state.cafeDrinks" class="border border-coffee-950" />
 
@@ -116,12 +116,12 @@ definePageMeta({ layout: 'dashboard' });
                         trailing-icon="i-heroicons-chevron-down-20-solid" />
 
                     <template #panel>
-                        <div class="p-4">
+                        <div class="flex flex-col justify-center items-center p-4">
                             <!-- Review Form -->
                             <div class="flex flex-col justify-center items-start px-4">
                                 <!-- Error Message -->
-                                <div v-if="state.errorMsg">{{ state.errorMsg }}</div>
-                                <div v-if="state.reviewMsg">{{ state.reviewMsg }}</div>
+                                <span class="flex text-wrap w-4 md:w-auto" v-if="state.errorMsg">{{ state.errorMsg }}</span>
+                                <span class="flex text-wrap w-4 md:w-auto" v-if="state.reviewMsg">{{ state.reviewMsg }}</span>
 
                                 <!-- Form -->
                                 <UForm :schema="schema" :state="state" class="space-y-2">
@@ -140,7 +140,6 @@ definePageMeta({ layout: 'dashboard' });
                                     <UFormGroup name="reviewContent" label="Review">
                                         <UTextarea v-model="state.reviewContent" />
                                     </UFormGroup>
-
                                 </UForm>
 
                                 <UButton @click="onSubmit">Submit review</UButton>

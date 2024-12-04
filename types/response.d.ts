@@ -13,14 +13,14 @@ export interface LoginResponse {
 export interface CafeData {
     cafeName: string,
     averageStars: number,
-    DrinkOffered: {
+    Drinks: {
         drink_name: string,
         cafe_id: number
     }[],
-    Rating: {
-        rating_id: number,
+    Review: {
         user_id: number,
         cafe_id: number | null,
+        rating_id: number,
         comment: string | null,
         tasteRating: number,
         serviceRating: number,
