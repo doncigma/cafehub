@@ -65,7 +65,7 @@ export async function SubmitReview(username: string, ratings: { taste: number, s
             body: { busername: username, bratings: ratings, bcontent: reviewContent, bcafename:cafeName }
         });
         
-        if (!response?.status) {
+        if (!response.status) {
             throw new Error("Review submission failed");
         }
 
