@@ -7,13 +7,12 @@ export default {
     data() {
         return {
             cafes: [
-                { name: 'Mercury Coffee Co.', description: 'A cozy spot for coffee lovers.', priceLevel: 3 },
-                { name: 'Woods Coffee', description: 'Beautiful Location and scenery around this coffee shop', priceLevel: 2 },
-                { name: 'Aeire Coffee', description: 'Mid Food, midder people', priceLevel: 1 }
+                { name: 'ThruLine', description: 'A cozy spot for gourmet coffee.', priceLevel: 2 },
+                { name: 'Five Stones', description: 'Beautiful Location and scenery around this coffee shop', priceLevel: 2 },
+                { name: 'Aerie Coffee', description: 'Mid Food, good vibes', priceLevel: 1 }
             ],
             reviews: [
-                { user: 'Rachel', comment: 'This is the best coffee I’ve ever had. A great place for studying.', cafe: 'Mercury Coffee Co.', likes: 3, liked: false },
-                { user: 'Rachel', comment: 'This is the best coffee I’ve ever had. A great place for studying.', cafe: 'Mercury Coffee Co.', likes: 3, liked: false }
+                { user: 'Rachel', comment: 'This is the best coffee I’ve ever had. A great place for studying.', cafe: 'Zoka', likes: 3, liked: false },
             ],
             maxHearts: 1, // Set the maximum number of hearts displayed
             username: userStore.methods.getUser
