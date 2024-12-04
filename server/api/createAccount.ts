@@ -3,7 +3,7 @@ import os from 'os'
 import { PrismaClient } from "@prisma/client"
 import { PrismaNeon } from '@prisma/adapter-neon'
 import { Pool, neonConfig } from '@neondatabase/serverless'
-import { Response } from '~/types/response'
+import { SignupResponse } from '~/types/response'
 
 
 const PrismaClientSingleton = () => {
@@ -22,7 +22,7 @@ const prisma = PrismaClientSingleton();
 export default defineEventHandler(async (event) => {
     const method = event.node.req.method;
 
-    const response: Response = {
+    const response: SignupResponse = {
         status: false,
         data: {
             email: '',
@@ -48,35 +48,6 @@ export default defineEventHandler(async (event) => {
             };
 
             // create user
-            /* 
-                ERROR 
-                Invalid prisma.users.create() invocation in
-                C:\Projects\coding-school\cafehub\server\api\createAccount.ts:50:1
-
-                47 };
-                48
-                49 // create user
-                → 50 const userSuccess = await prisma.users.create(
-                Unique constraint failed on the fields: (Username)
-
-                Invalid prisma.users.create() invocation in
-                server\api\createAccount.ts:50:1
-
-                47 };
-                48
-                49 // create user
-                → 50 const userSuccess = await prisma.users.create(
-                Unique constraint failed on the fields: (Username)
-                at $n.handleRequestError (node_modules\@prisma\client\runtime\library.js:121:7315)
-                at $n.handleAndLogRequestError (node_modules\@prisma\client\runtime\library.js:121:6623)
-                at $n.request (node_modules\@prisma\client\runtime\library.js:121:6307)
-                at async l (node_modules\@prisma\client\runtime\library.js:130:9633)
-                at async Object.handler (server\api\createAccount.ts:50:1)
-                at async /C:/Projects/coding-school/cafehub/node_modules/h3/dist/index.mjs:1978:19
-                at async Object.callAsync (/C:/Projects/coding-school/cafehub/node_modules/unctx/dist/index.mjs:72:16)
-                at async Server.toNodeHandle (/C:/Projects/coding-school/cafehub/node_modules/h3/dist/index.mjs:2270:7)
-            */
-            // VV ERROR VV
             const userSuccess = await prisma.users.create({ data: uData });
             if (!userSuccess) {
                 throw new Error("Account creation unsuccessful");
@@ -92,7 +63,7 @@ export default defineEventHandler(async (event) => {
         }
         catch (error) {
             console.error(error);
-            const fail: Response = {
+            const fail: SignupResponse = {
                 status: false,
                 data: {
                     email: '',
@@ -102,11 +73,10 @@ export default defineEventHandler(async (event) => {
             };
             return fail;
         }
-
     }
     else {
-        console.error("Method cannot be GET on a createAccount fetch")
-        const fail: Response = {
+        console.error("Method must be POST on a createAccount fetch")
+        const fail: SignupResponse = {
             status: false,
             data: {
                 email: '',
@@ -116,28 +86,4 @@ export default defineEventHandler(async (event) => {
         };
         return fail;
     }
-    // VV shouldnt need this cuz createUser should never be GET, just log error if it is VV
-    // else if (method === "GET") {
-
-    //     let query = getQuery(event)
-
-    //     if (!query || !query.userName || !query.userPassword || !query.userEmail) {
-    //         return response;
-    //     }
-    //     const uData = {
-    //         Username: String(query.userName),
-    //         Password: String(query.userPassword),
-    //         email: String(query.userEmail)
-    //     };
-    //     response.data = uData;
-    //     try {
-    //         const data = await prisma.users.create({ data: uData })
-    //         response.status = true;
-    //         return response;
-    //     }
-    //     catch (error) {
-    //         response.status = false;
-    //         return response;
-    //     }
-    // }
 });

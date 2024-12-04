@@ -1,13 +1,12 @@
-export async function Login(email, password) {
+export async function Login(email: string, password: string) {
     try {
         const response = await $fetch("/api/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: { bemail: email, bpassword: password }
         });
-        console.log('apihandler: ', response.data.value)
 
-        if (!response.status) {
+        if (!response?.status) {
             throw new Error("Login failed");
         }
 
@@ -19,9 +18,7 @@ export async function Login(email, password) {
     }
 }
 
-// ^^ UP TO DATE ^^
-
-export async function CreateAccount(email, password, username) {
+export async function CreateAccount(email: string, password: string, username: string) {
     try {
         const response = await $fetch("/api/createAccount", {
             method: "POST",
@@ -40,64 +37,42 @@ export async function CreateAccount(email, password, username) {
     }
 }
 
-export async function GetCafeList(cafeName) {
-    try {
-        const response = await $fetch("/api/getCafeList", {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(cafeName)
-        });
-
-        if (!response.ok) {
-            throw new Error("Cafe list useFetch failed");
-        }
-
-        const data = await response.json();
-        return data.success ? "success" : "fail";
-    }
-    catch (error) {
-        console.error(error);
-        return "fail";
-    }
-}
-
-export async function GetCafeData(cafeName) {
+export async function GetCafeData(cafeName: string) {
     try {
         const response = await $fetch("/api/getCafeData", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(cafeName)
+            body: { bcafeName: cafeName }
         });
 
-        if (!response.status) {
-            throw new Error("Cafe data useFetch failed");
+        if (!response?.status) {
+            throw new Error("Cafe data fetch failed");
         }
 
         return response;
     }
     catch (error) {
         console.error(error);
-        return;
+        return null;
     }
 }
 
-export async function SubmitReview(userEmail, userPassword, userName, { rating: [], text: undefined }) {
+export async function SubmitReview(email: string, password: string, username: string, ratings: { taste: number, service: number, atmosphere: number }, reviewContent: string) {
     try {
         const response = await $fetch("/api/submitReview", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ userEmail, userPassword, userName })
+            body: { bemail: email, bpassword: password, busername: username, bratings: ratings, bcontent: reviewContent }
         });
 
-        if (!response.ok) {
+        if (!response?.status) {
             throw new Error("Review submission failed");
         }
 
-        
         return response;
     }
     catch (error) {
         console.error(error);
-        return "fail";
+        return null;
     }
 }

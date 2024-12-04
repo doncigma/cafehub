@@ -2,7 +2,7 @@ import ws from 'ws'
 import { PrismaClient } from "@prisma/client"
 import { PrismaNeon } from '@prisma/adapter-neon'
 import { Pool, neonConfig } from '@neondatabase/serverless'
-import { Response, LoginData } from '~/types/response'
+import { LoginResponse, LoginData } from '~/types/response'
 
 
 const PrismaClientSingleton = () => {
@@ -21,7 +21,7 @@ const prisma = PrismaClientSingleton();
 export default defineEventHandler(async (event) => {
     const method = event.node.req.method;
 
-    const response: Response = {
+    const response: LoginResponse = {
         status: false,
         data: {
             email: '',
@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
         }
     };
 
-    if (method === "GET") {
+    if (method === "POST") {
         try {
             // get args from body
             const body = await readBody(event);
@@ -63,7 +63,7 @@ export default defineEventHandler(async (event) => {
         }
         catch (error) {
             console.error(error);
-            const fail: Response = {
+            const fail: LoginResponse = {
                 status: false,
                 data: {
                     email: '',
@@ -75,52 +75,56 @@ export default defineEventHandler(async (event) => {
         }
 
     }
-// VV pretty sure we dont need this, as login will only ever be get, just log error if method is POST VV
-     else if (method === "POST") {
-         try {
-             let body = await readBody(event)
+    else if (method === "POST") {
+        try {
+            let body = await readBody(event)
 
-             if (!body || !body.bpassword || !body.bemail) {
+            if (!body || !body.bpassword || !body.bemail) {
                 console.error("top")
                 if (!body.bemail) {
                     console.error("no body")
                 }
-                 return response;
-             }
-             const uData: LoginData = {
-                 email: String(body.bemail),
-                 username: '',
-                 password: String(body.bpassword),
-             };
-             const loginSuccess = await prisma.users.findFirst({
+                return response;
+            }
+
+            const uData: LoginData = {
+                email: String(body.bemail),
+                username: '',
+                password: String(body.bpassword),
+            };
+
+            const loginSuccess = await prisma.users.findFirst({
                 select: {
                     email: true,
                     Username: true,
                     Password: true
                 },
-                 where: {
-                     email: uData.email,
-                     Password: uData.password
-                 }
-             });
-             if (!loginSuccess?.Username) {
+                where: {
+                    email: uData.email,
+                    Password: uData.password
+                }
+            });
+
+            if (!loginSuccess?.Username) {
                 console.error("Account does not exist");
-                 response.status = false;
-                 return response;
-             }
-             response.data = {
+                response.status = false;
+                return response;
+            }
+
+            response.data = {
                 email: loginSuccess.email,
                 username: loginSuccess.Username,
                 password: loginSuccess.Password
-             }
-             response.status = true;
-             console.log('login.ts: ', response)
-             return response;
-         }
-         catch (error) {
-             response.status = false;
-             console.error("oopsie");
-             return response;
-         }
-     }
+            }
+
+            response.status = true;
+            console.log('login.ts: ', response)
+            return response;
+        }
+        catch (error) {
+            response.status = false;
+            console.error("oopsie");
+            return response;
+        }
+    }
 });
