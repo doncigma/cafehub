@@ -1,17 +1,17 @@
-export function Login(email, password) {
+export async function Login(email, password) {
     try {
-        const response = $fetch("/api/login", {
+        const response = await $fetch("/api/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: { bemail: email, bpassword: password }
         });
         console.log('apihandler: ', response.data.value)
 
-        if (!response.ok) {
+        if (!response.status) {
             throw new Error("Login failed");
         }
 
-        return response.data.value;
+        return response;
     }
     catch (error) {
         console.error(error);
@@ -28,12 +28,11 @@ export async function CreateAccount(email, password, username) {
             headers: { "Content-Type": "application/json" },
             body: { bemail: email, bpassword: password, busername: username }
         });
-
-        if (!response.ok) {
+        if (!response.status) {
             throw new Error("Account creation failed");
         }
 
-        return response.data.value
+        return response;
     }
     catch (error) {
         console.error(error);

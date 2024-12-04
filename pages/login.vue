@@ -33,13 +33,14 @@ async function onLogin() {
     //     body: { email: 'GregPaul@gmail.com', password: 'Password' }
     // });
 
-    const result = Login(state.email, state.password);
+    const result =  await Login(state.email, state.password);
     console.log(result)
     if (result?.status) {
         userStore.methods.updateUser(result.data.email, result.data.username);
         userStore.methods.setLoggedIn(true);
+
         setTimeout(() => {
-            router.push('/');
+            router.push('/cafepage');
         }, 1000);
     }
     else {

@@ -23,12 +23,13 @@ interface Response {
         average_stars: Number,
         DrinkOffered: { drink_name: string; cafe_id: number; }[],
         Rating: { 
+            user_id: number;
             cafe_id: number | null;
-            rating_id: number;
-            stars: number;
             comment: string | null;
-            UpVotes: number;
-            DownVotes: number; }[]
+            tasteRating: Number;
+            serviceRating: Number;
+            AtmosphereRating: Number;
+             }[]
     }
 }
 
@@ -112,7 +113,7 @@ export default defineEventHandler(async (event) => {
         }
     }
     else if (method === "POST") {
-        console.error("Methid cannot be POST on a GetCafeData fetch");
+        console.error("Method cannot be POST on a GetCafeData fetch");
         let fail : Response = {
             status: false,
             data: {
