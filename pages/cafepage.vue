@@ -54,8 +54,8 @@ function logAtmosphereRating(event: number) {
 }
 
 // Cafe Search
-async function search(cafeName: string) {
-    const result = await GetCafeData(cafeName.toLowerCase());
+async function search(cafeName: String) {
+    const result = await GetCafeData(cafeName.toString().toLowerCase());
     if (result?.status) {
         state.cafeName = result.data.shop_name;
         state.cafeDrinks = result.data.DrinkOffered;
@@ -90,9 +90,10 @@ definePageMeta({ layout: 'dashboard' });
 
 <template>
     <!-- Cafe Search -->
-    <div v-if="!state.cafeSearched">
+    <div class="flex flex-col items-center" v-if="!state.cafeSearched">
         <p>Search for your favorite cafe!</p>
-        <UTextarea v-model="state.cafeName" @keyup.enter="search" placeholder="Search cafe's..." />
+        <UTextarea v-model="state.cafeName" @keydown.enter="search" placeholder="Search cafe's..." />
+        <UButton @click="search">Search</UButton>
     </div>
 
     <!-- Cafe Display -->
