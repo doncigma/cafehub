@@ -90,9 +90,10 @@ definePageMeta({ layout: 'dashboard' });
 
 <template>
     <!-- Cafe Search -->
-    <div v-if="!state.cafeSearched">
+    <div class="flex flex-col items-center" v-if="!state.cafeSearched">
         <p>Search for your favorite cafe!</p>
-        <UTextarea v-model="state.cafeName" @keyup.enter="search" placeholder="Search cafe's..." />
+        <UTextarea v-model="state.cafeName" @keydown.enter="search" placeholder="Search cafe's..." />
+        <UButton @click="search">Search</UButton>
     </div>
 
     <!-- Cafe Display -->
