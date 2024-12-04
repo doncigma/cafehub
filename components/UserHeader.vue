@@ -4,7 +4,6 @@ import useUserStore from '../stores/userStore';
 const userStore = useUserStore();
 const userState = userStore.state;
 
-const router = useRouter();
 
 </script>
 

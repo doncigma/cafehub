@@ -38,45 +38,6 @@ const prisma = PrismaClientSingleton();
 
 export default defineEventHandler(async (event) => {
     const method = event.node.req.method;
-    // let response : Response = {
-    //     status: false,
-    //     data: {
-    //         average_stars: 0,
-    //         DrinkOffered: [],
-    //         Rating: []
-    //     }
-    // };
-    
-    // if (method === "POST") {
-
-    //     try {
-            
-    //         const body = await readBody(event);
-    //         const cafeData = await prisma.cafe.findFirst({
-    //             select: {
-    //                 shop_name: false,
-    //                 shop_id: false,
-    //                 average_stars: true,
-    //                 DrinkOffered: true,
-    //                 Rating: true
-
-    //             },
-    //             where: {
-    //                 shop_name: String(body.cafeName)
-    //             }
-    //         })
-    //         if (cafeData) {
-    //             response.data = cafeData;
-    //         }
-    //         response.status = true;
-    //         return response;
-    //     }
-    //     catch (error) {
-    //         response.status = false;
-    //         return response;
-    //     }
-    // }
-
     if (method === "POST") {
         let response : Response = {
             status: false,
