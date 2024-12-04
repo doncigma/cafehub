@@ -28,10 +28,6 @@ const userStore = useUserStore();
 const router = useRouter();
 
 async function onLogin() {
-    // $fetch('api/login', {
-    //     method: 'GET',
-    //     body: { email: 'GregPaul@gmail.com', password: 'Password' }
-    // });
 
     const result =  await Login(state.email, state.password);
     console.log(result)

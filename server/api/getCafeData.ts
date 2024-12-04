@@ -38,46 +38,7 @@ const prisma = PrismaClientSingleton();
 
 export default defineEventHandler(async (event) => {
     const method = event.node.req.method;
-    // let response : Response = {
-    //     status: false,
-    //     data: {
-    //         average_stars: 0,
-    //         DrinkOffered: [],
-    //         Rating: []
-    //     }
-    // };
-    
-    // if (method === "POST") {
-
-    //     try {
-            
-    //         const body = await readBody(event);
-    //         const cafeData = await prisma.cafe.findFirst({
-    //             select: {
-    //                 shop_name: false,
-    //                 shop_id: false,
-    //                 average_stars: true,
-    //                 DrinkOffered: true,
-    //                 Rating: true
-
-    //             },
-    //             where: {
-    //                 shop_name: String(body.cafeName)
-    //             }
-    //         })
-    //         if (cafeData) {
-    //             response.data = cafeData;
-    //         }
-    //         response.status = true;
-    //         return response;
-    //     }
-    //     catch (error) {
-    //         response.status = false;
-    //         return response;
-    //     }
-    // }
-
-    if (method === "GET") {
+    if (method === "POST") {
         let response : Response = {
             status: false,
             data: {
@@ -89,7 +50,7 @@ export default defineEventHandler(async (event) => {
         };
 
         try {
-            const body = await getQuery(event);
+            const body = await readBody(event);
             const cafeData = await prisma.cafe.findFirst({
                 select: {
                     shop_name: true,
@@ -99,9 +60,10 @@ export default defineEventHandler(async (event) => {
                     Rating: true
                     },
                     where: {
-                        shop_name: String(body.cafeName)
+                        shop_name: body.cafeName
                         }
             })
+            console.log(cafeData?.shop_name)
             if (cafeData) {
                 response.data = cafeData;
             }
@@ -113,18 +75,5 @@ export default defineEventHandler(async (event) => {
             response.status = false;
             return response;
         }
-    }
-    else if (method === "POST") {
-        console.error("Method cannot be POST on a GetCafeData fetch");
-        let fail : Response = {
-            status: false,
-            data: {
-                shop_name: '',
-                average_stars: 0,
-                DrinkOffered: [],
-                Rating: []
-            }
-        };
-        return fail;
     }
 })
