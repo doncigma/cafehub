@@ -47,7 +47,7 @@ export default defineEventHandler(async (event) => {
                     shop_id: true
                 },
                 where: {
-                    shop_name: body.bcafeName
+                    shop_name: body.bcafename
                 }
             });
             console.log(cafe)
