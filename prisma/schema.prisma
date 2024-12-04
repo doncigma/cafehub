@@ -42,12 +42,14 @@ model Drinks {
 }
 
 model Rating {
-  rating_id   Int           @id @default(autoincrement())
-  stars       Float
-  comment     String?
-  UpVotes     Int           @default(0)
-  DownVotes   Int           @default(0)
-  cafe_id     Int?
+  rating_id         Int          @id @default(autoincrement())
+  user_id           Int
+  cafe_id           Int?
+  comment           String?
+  tasteRating       Float
+  serviceRating     Float
+  AtmosphereRating  Float
+  
   Cafe        Cafe?         @relation(fields: [cafe_id], references: [shop_id])
   UserRatings UserRatings[]
 
