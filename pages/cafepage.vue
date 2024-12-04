@@ -118,13 +118,13 @@ definePageMeta({ layout: 'dashboard' });
                     <template #panel>
                         <div class="p-4">
                             <!-- Review Form -->
-                            <div class="flex flex-col items-start px-4">
+                            <div class="flex flex-col justify-center items-start px-4">
                                 <!-- Error Message -->
                                 <div v-if="state.errorMsg">{{ state.errorMsg }}</div>
                                 <div v-if="state.reviewMsg">{{ state.reviewMsg }}</div>
 
                                 <!-- Form -->
-                                <UForm :schema="schema" :state="state" class="space-y-2" @submit="onSubmit">
+                                <UForm :schema="schema" :state="state" class="space-y-2">
                                     <p>Taste</p>
                                     <NuxtRating @rating-selected="logTasteRating" :read-only="false" :rating-value="0"
                                         :rating-step="1" />
@@ -141,8 +141,9 @@ definePageMeta({ layout: 'dashboard' });
                                         <UTextarea v-model="state.reviewContent" />
                                     </UFormGroup>
 
-                                    <UButton type="submit">Submit review</UButton>
                                 </UForm>
+
+                                <UButton @click="onSubmit">Submit review</UButton>
                             </div>
                         </div>
                     </template>

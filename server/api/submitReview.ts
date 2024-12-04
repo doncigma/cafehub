@@ -20,8 +20,9 @@ const prisma = PrismaClientSingleton();
 export default defineEventHandler(async (event) => {
     const method = event.node.req.method;
 
+    const response: ReviewResponse = { status: false }
+
     if (method === "POST") {
-        const response: ReviewResponse = { status: false }
 
         try {
             // Retrieve args
@@ -82,8 +83,7 @@ export default defineEventHandler(async (event) => {
         }
     }
     else {
-        console.error("Method must be POST on a createAccount fetch")
-        const fail: ReviewResponse = { status: false }
-        return fail;
+        console.error("Method must be POST on a createAccount fetch");
+        return response;
     }
 })
