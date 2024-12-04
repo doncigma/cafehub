@@ -56,7 +56,7 @@ function logAtmosphereRating(event: number) {
 // Cafe Search
 async function search(cafeName: string) {
     const result = await GetCafeData(cafeName.toLowerCase());
-    if (result.status) {
+    if (result?.status) {
         state.cafeName = result.data.cafeName;
         state.cafeDrinks = result.data.cafeDrinks;
         state.cafeReviews = result.data.cafeReviews;

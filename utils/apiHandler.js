@@ -69,12 +69,11 @@ export async function GetCafeData(cafeName) {
             body: JSON.stringify(cafeName)
         });
 
-        if (!response.ok) {
+        if (!response.status) {
             throw new Error("Cafe data useFetch failed");
         }
 
-        const data = await response.json();
-        return data.success ? "success" : "fail";
+        return response;
     }
     catch (error) {
         console.error(error);
