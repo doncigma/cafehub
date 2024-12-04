@@ -43,7 +43,7 @@ async function onSignup() {
         userStore.methods.setLoggedIn(true);
 
         setTimeout(() => {
-            router.push('/index');
+            router.push('/cafepage');
         }, 1000);
     }
     else {
