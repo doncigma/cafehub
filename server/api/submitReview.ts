@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
             if (!body) {
                 throw new Error("getCafeData readBody failed");
             }
-            
+            console.log(body)
             // Fetch data
             const user = await prisma.users.findFirst({
                 select: {
@@ -41,7 +41,7 @@ export default defineEventHandler(async (event) => {
                     Username: body.busername
                 }
             });
-
+            console.log(user);
             const cafe = await prisma.cafe.findFirst({
                 select: {
                     shop_id: true
@@ -50,7 +50,7 @@ export default defineEventHandler(async (event) => {
                     shop_name: body.bcafeName
                 }
             });
-
+            console.log(cafe)
             if (!user || !cafe) {
                 throw new Error('findFirst user or cafe query failed');
             }

@@ -64,7 +64,7 @@ export async function SubmitReview(username: string, ratings: { taste: number, s
             headers: { "Content-Type": "application/json" },
             body: { busername: username, bratings: ratings, bcontent: reviewContent }
         });
-
+        
         if (!response?.status) {
             throw new Error("Review submission failed");
         }
