@@ -67,7 +67,7 @@ async function onSubmit() {
     state.reviewMsg = '';
 
     const user = userStore.methods.getUser();
-    const result = await SubmitReview(user.username, state.ratings, state.reviewContent);
+    const result = await SubmitReview(user.username, state.ratings, state.reviewContent, state.cafeName);
     if (result?.status) {
         state.reviewMsg = 'Review submitted!';
     }

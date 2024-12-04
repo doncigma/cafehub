@@ -57,12 +57,12 @@ export async function GetCafeData(cafeName: string) {
     }
 }
 
-export async function SubmitReview(username: string, ratings: { taste: number, service: number, atmosphere: number }, reviewContent: string) {
+export async function SubmitReview(username: string, ratings: { taste: number, service: number, atmosphere: number }, reviewContent: string, cafeName: string) {
     try {
         const response = await $fetch("/api/submitReview", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: { busername: username, bratings: ratings, bcontent: reviewContent }
+            body: { busername: username, bratings: ratings, bcontent: reviewContent, bcafename:cafeName }
         });
         
         if (!response?.status) {
