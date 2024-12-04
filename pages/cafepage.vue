@@ -54,8 +54,8 @@ function logAtmosphereRating(event: number) {
 }
 
 // Cafe Search
-async function search(cafeName: string) {
-    const result = await GetCafeData(cafeName.toLowerCase());
+async function search(cafeName: String) {
+    const result = await GetCafeData(cafeName.toString().toLowerCase());
     if (result?.status) {
         state.cafeName = result.data.shop_name;
         state.cafeDrinks = result.data.DrinkOffered;
