@@ -31,9 +31,7 @@ export default {
     }
 };
 
-definePageMeta({
-    layout: 'dashboard'
-});
+definePageMeta({ layout: 'dashboard' });
 </script>
 
 <template>

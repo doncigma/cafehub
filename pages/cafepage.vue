@@ -3,7 +3,13 @@ import useUserStore from '~/stores/userStore'
 import { SubmitReview } from '~/utils/apiHandler'
 import Joi from 'joi'
 
-// Page State
+// Form schema
+const schema = Joi.object({
+    rating: Joi.number(),
+    reviewContent: Joi.string().min(10).max(500).required(),
+});
+
+// Page state
 const state = reactive({
     errorMsg: '',
     ratings: {
@@ -16,24 +22,10 @@ const state = reactive({
     cafeName: '',
     cafeSearched: false,
     cafeDrinks: [{}], // array of objects
-    cafeReviews: [{}],
+    cafeReviews: [{}]
 });
 
-// Form Setup
-const schema = Joi.object({
-    rating: Joi.number(),
-    reviewContent: Joi.string().min(10).max(500).required(),
-});
-
-const validate = (state: any) => {
-    const errors = [];
-    if (!state.reviewContent) errors.push({ path: 'reviewContent', message: 'Please enter a review.' });
-    else if (!state.reviewContent) errors.push({ path: 'reviewContent', message: 'Invalid review length.' });
-    else if (!state.rating) errors.push({ path: 'reviewContent', message: 'Please leave a rating.' });
-    return errors;
-}
-
-// Review Functions
+// Review functions
 function clearReview() {
     state.ratings.taste = 0;
     state.ratings.service = 0;
@@ -53,34 +45,34 @@ function logAtmosphereRating(event: number) {
     state.ratings.atmosphere = event;
 }
 
-// Cafe Search
-async function search(cafeName: String) {
-    const result = await GetCafeData(cafeName.toString().toLowerCase());
+// Cafe search
+async function search() {
+    const result = await GetCafeData(state.cafeName);
     if (result?.status) {
-        state.cafeName = result.data.shop_name;
-        state.cafeDrinks = result.data.DrinkOffered;
-        state.cafeReviews = result.data.Rating;
+        state.cafeName = result.data.cafeName;
+        state.cafeDrinks = result.data.Drinks;
+        state.cafeReviews = result.data.Review;
         state.cafeSearched = true;
     }
     else {
-        state.errorMsg = "That cafe does not exist.";
+        state.errorMsg = 'That cafe does not exist.';
         state.cafeName = '';
     }
 }
 
-// Update Store and Database
+// Update store and database
 const userStore = useUserStore();
 
 async function onSubmit() {
     state.reviewMsg = '';
 
     const user = userStore.methods.getUser();
-    const result = await SubmitReview(user.username, state.ratings, state.reviewContent);
+    const result = await SubmitReview(user.username, state.ratings, state.reviewContent, state.cafeName);
     if (result?.status) {
         state.reviewMsg = 'Review submitted!';
     }
     else {
-        state.errorMsg = "There was a problem submitting this review. Please try again later.";
+        state.errorMsg = 'There was a problem submitting this review.';
         state.reviewMsg = '';
     }
 }
@@ -92,21 +84,21 @@ definePageMeta({ layout: 'dashboard' });
     <!-- Cafe Search -->
     <div class="flex flex-col items-center" v-if="!state.cafeSearched">
         <p>Search for your favorite cafe!</p>
-        <UTextarea v-model="state.cafeName" @keydown.enter="search" placeholder="Search cafe's..." />
+        <UTextarea v-model="state.cafeName" placeholder="Search cafe's..." />
         <UButton @click="search">Search</UButton>
     </div>
 
     <!-- Cafe Display -->
-    <div class="flex flex-col justify-center items-center" v-if="state.cafeSearched">
+    <div class="flex flex-col justify-center items-center space-y-2" v-if="state.cafeSearched">
         <h1>{{ state.cafeName }}</h1>
-        
+
         <!-- Cafe Tables -->
-        <div class="flex justify-start items-center">
+        <div class="flex flex-col md:flex-row justify-start items-center space-y-2 md:space-y-0 md:space-x-4">
             <!-- Drinks -->
-            <UTable label="Drinks" :rows="state.cafeDrinks" />
+            <UTable label="Drinks" :rows="state.cafeDrinks" class="border border-coffee-950" />
 
             <!-- Reviews -->
-            <UTable label="Reviews" :rows="state.cafeReviews" />
+            <UTable label="Reviews" :rows="state.cafeReviews" class="border border-coffee-950" />
         </div>
 
         <!-- Cafe Review -->
@@ -124,31 +116,33 @@ definePageMeta({ layout: 'dashboard' });
                         trailing-icon="i-heroicons-chevron-down-20-solid" />
 
                     <template #panel>
-                        <div class="p-4">
+                        <div class="flex flex-col justify-center items-center p-4">
                             <!-- Review Form -->
-                            <div class="flex flex-col items-start px-4">
+                            <div class="flex flex-col justify-center items-start px-4">
                                 <!-- Error Message -->
-                                <div v-if="state.errorMsg">{{ state.errorMsg }}</div>
-                                <div v-if="state.reviewMsg">{{ state.reviewMsg }}</div>
-                                
+                                <span class="flex text-wrap w-4 md:w-auto" v-if="state.errorMsg">{{ state.errorMsg }}</span>
+                                <span class="flex text-wrap w-4 md:w-auto" v-if="state.reviewMsg">{{ state.reviewMsg }}</span>
+
                                 <!-- Form -->
-                                <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4"
-                                    @submit="onSubmit">
+                                <UForm :schema="schema" :state="state" class="space-y-2">
+                                    <p>Taste</p>
                                     <NuxtRating @rating-selected="logTasteRating" :read-only="false" :rating-value="0"
                                         :rating-step="1" />
 
+                                    <p>Service</p>
                                     <NuxtRating @rating-selected="logServiceRating" :read-only="false" :rating-value="0"
                                         :rating-step="1" />
 
-                                    <NuxtRating @rating-selected="logAtmosphereRating" :read-only="false" :rating-value="0"
-                                        :rating-step="1" />
+                                    <p>Atmosphere</p>
+                                    <NuxtRating @rating-selected="logAtmosphereRating" :read-only="false"
+                                        :rating-value="0" :rating-step="1" />
 
                                     <UFormGroup name="reviewContent" label="Review">
                                         <UTextarea v-model="state.reviewContent" />
                                     </UFormGroup>
-
-                                    <UButton type="submit">Submit review</UButton>
                                 </UForm>
+
+                                <UButton @click="onSubmit">Submit review</UButton>
                             </div>
                         </div>
                     </template>

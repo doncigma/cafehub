@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import useUserStore from '../stores/userStore';
+import useUserStore from '~/stores/userStore';
 
 const userStore = useUserStore();
 const userState = userStore.state;
-
-
 </script>
 
 <template>
@@ -14,7 +12,7 @@ const userState = userStore.state;
             <div class="flex flex-col items-start space-y-2 md:space-y-6 px-4">
                 <!-- Username Greeting -->
                 <div class="text-white text-2xl md:text-3xl tracking-wide font-normal font-['Playfair Display'] mb-2">
-                    Hello<span v-if="userState.isLoggedIn">, {{ userState.username }}</span><span v-else>!</span>
+                    Hello<span class="text-bold" v-if="userState.isLoggedIn">, <span class="text-coffee-300">{{ userState.username }}</span></span><span>!</span>
                 </div>
             </div>
 
