@@ -77,7 +77,7 @@ export default defineEventHandler(async (event) => {
     //     }
     // }
 
-    if (method === "GET") {
+    if (method === "POST") {
         let response : Response = {
             status: false,
             data: {
@@ -89,7 +89,7 @@ export default defineEventHandler(async (event) => {
         };
 
         try {
-            const body = await getQuery(event);
+            const body = await readBody(event);
             const cafeData = await prisma.cafe.findFirst({
                 select: {
                     shop_name: true,
