@@ -1,8 +1,7 @@
 // Login types
 export interface LoginData {
     email: string,
-    username: string,
-    password: string
+    username: string
 }
 
 export interface LoginResponse {
@@ -47,6 +46,15 @@ export interface SignupResponse {
 }
 
 // Review types
+export interface ReviewData {
+    rating_id: number,
+    user_id: number,
+    cafe_id: number,
+    comment: string,
+    tasteRating: number,
+    serviceRating: number,
+    AtmosphereRating: number
+}
 export interface ReviewResponse {
-    
+    status: boolean
 }

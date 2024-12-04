@@ -1,58 +1,77 @@
-//In: Email, password, username, {rating, text}
-//out: bool(Fail, Success), {rating, text}
+import ws from 'ws'
+import { PrismaClient } from "@prisma/client"
+import { PrismaNeon } from '@prisma/adapter-neon'
+import { Pool, neonConfig } from '@neondatabase/serverless'
+import { ReviewResponse } from "~/types/response"
+
+const PrismaClientSingleton = () => {
+    neonConfig.webSocketConstructor = ws;
+    const connectionString = 'postgresql://neondb_owner:HGgkcTsP8CO9@ep-empty-scene-a6d4mg1t-pooler.us-west-2.aws.neon.tech/neondb?sslmode=require'
+
+    const pool = new Pool({ connectionString });
+    const adapter = new PrismaNeon(pool);
+    const prisma = new PrismaClient({ adapter });
+
+    return prisma;
+}
+
+const prisma = PrismaClientSingleton();
 
 export default defineEventHandler(async (event) => {
     const method = event.node.req.method;
-    
+
     if (method === "POST") {
-        const response: CafeResponse = {
-            status: false,
-            data: {
-                cafeName: '',
-                averageStars: 0,
-                DrinkOffered: [{
-                    drink_name: '',
-                    cafe_id: 0
-                }],
-                Rating: [{
-                    rating_id: 0,
-                    user_id: 0,
-                    cafe_id: 0,
-                    comment: '',
-                    tasteRating: 0,
-                    serviceRating: 0,
-                    AtmosphereRating: 0
-                }]
-            }
-        };
+        const response: ReviewResponse = { status: false }
 
         try {
+            // Retrieve args
             const body = await readBody(event);
-            console.log(body)
-            const cafeData = await prisma.cafe.findFirst({
+
+            if (!body) {
+                throw new Error("getCafeData readBody failed");
+            }
+            
+            // Fetch data
+            const user = await prisma.users.findFirst({
                 select: {
-                    shop_name: true,
-                    shop_id: false,
-                    average_stars: true,
-                    DrinkOffered: true,
-                    Rating: true
+                    user_id: true
+                },
+                where: {
+                    Username: body.busername
+                }
+            });
+
+            const cafe = await prisma.cafe.findFirst({
+                select: {
+                    shop_id: true
                 },
                 where: {
                     shop_name: body.bcafeName
                 }
-            })
-            console.log(cafeData)
+            });
 
-            if (!cafeData) {
+            if (!user || !cafe) {
+                throw new Error('findFirst user or cafe query failed');
+            }
+
+            // Define data
+            const rData = {
+                user_id: user.user_id,
+                cafe_id: cafe.shop_id,
+                comment: body.bcontent,
+                tasteRating: body.ratings.taste,
+                serviceRating: body.ratings.service,
+                AtmosphereRating: body.ratings.atmosphere
+            };
+
+            // Try write
+            const reviewData = await prisma.rating.create({ data: rData });
+
+            if (!reviewData) {
                 throw new Error('getCafeData query failed');
             }
 
-            response.data.cafeName = cafeData.shop_name;
-            response.data.averageStars = cafeData.average_stars;
-
-            response.data.DrinkOffered = cafeData.DrinkOffered;
-            response.data.Rating = cafeData.Rating;
-
+            // Return
             response.status = true;
             return response;
         }
@@ -64,26 +83,7 @@ export default defineEventHandler(async (event) => {
     }
     else {
         console.error("Method must be POST on a createAccount fetch")
-        const fail: ReviewResponse = {
-            status: false,
-            data: {
-                cafeName: '',
-                averageStars: 0,
-                DrinkOffered: [{
-                    drink_name: '',
-                    cafe_id: 0
-                }],
-                Rating: [{
-                    rating_id: 0,
-                    user_id: 0,
-                    cafe_id: 0,
-                    comment: '',
-                    tasteRating: 0,
-                    serviceRating: 0,
-                    AtmosphereRating: 0
-                }]
-            }
-        };
+        const fail: ReviewResponse = { status: false }
         return fail;
     }
 })

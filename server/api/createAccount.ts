@@ -1,5 +1,4 @@
 import ws from 'ws'
-import os from 'os'
 import { PrismaClient } from "@prisma/client"
 import { PrismaNeon } from '@prisma/adapter-neon'
 import { Pool, neonConfig } from '@neondatabase/serverless'
@@ -33,57 +32,44 @@ export default defineEventHandler(async (event) => {
 
     if (method === "POST") {
         try {
-            // get args from body
+            // Retrieve args
             const body = await readBody(event);
 
             if (!body) {
-                throw new Error("Fetch readBody failed");
+                throw new Error("createAccount readBody failed");
             }
 
-            // define data
+            // Define data
             const uData = {
                 Username: body.busername,
                 Password: body.bpassword,
                 email: body.bemail
             };
 
-            // create user
+            // Create user
             const userSuccess = await prisma.users.create({ data: uData });
+            
             if (!userSuccess) {
                 throw new Error("Account creation unsuccessful");
             }
             
-            response.status = true;
+            // Return
             response.data = {
-                email: String(body.bemail),
-                username: String(body.busername),
-                password: String(body.bpassword)
+                email: body.bemail,
+                username: body.busername,
+                password: body.bpassword
             };
+            response.status = true;
+
             return response;
         }
         catch (error) {
             console.error(error);
-            const fail: SignupResponse = {
-                status: false,
-                data: {
-                    email: '',
-                    username: '',
-                    password: ''
-                }
-            };
-            return fail;
+            return response;
         }
     }
     else {
         console.error("Method must be POST on a createAccount fetch")
-        const fail: SignupResponse = {
-            status: false,
-            data: {
-                email: '',
-                username: '',
-                password: ''
-            }
-        };
-        return fail;
+        return response;
     }
 });

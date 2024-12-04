@@ -4,7 +4,7 @@ export async function Login(email: string, password: string) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: { bemail: email, bpassword: password }
-        });
+        });                
 
         if (!response?.status) {
             throw new Error("Login failed");
@@ -57,12 +57,12 @@ export async function GetCafeData(cafeName: string) {
     }
 }
 
-export async function SubmitReview(email: string, password: string, username: string, ratings: { taste: number, service: number, atmosphere: number }, reviewContent: string) {
+export async function SubmitReview(username: string, ratings: { taste: number, service: number, atmosphere: number }, reviewContent: string) {
     try {
         const response = await $fetch("/api/submitReview", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: { bemail: email, bpassword: password, busername: username, bratings: ratings, bcontent: reviewContent }
+            body: { busername: username, bratings: ratings, bcontent: reviewContent }
         });
 
         if (!response?.status) {

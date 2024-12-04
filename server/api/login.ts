@@ -2,7 +2,7 @@ import ws from 'ws'
 import { PrismaClient } from "@prisma/client"
 import { PrismaNeon } from '@prisma/adapter-neon'
 import { Pool, neonConfig } from '@neondatabase/serverless'
-import { LoginResponse, LoginData } from '~/types/response'
+import { LoginResponse } from '~/types/response'
 
 
 const PrismaClientSingleton = () => {
@@ -25,106 +25,53 @@ export default defineEventHandler(async (event) => {
         status: false,
         data: {
             email: '',
-            username: '',
-            password: ''
+            username: ''
         }
     };
 
     if (method === "POST") {
         try {
-            // get args from body
+            // Retrieve args
             const body = await readBody(event);
 
-            if (!body || !body.email || !body.password) {
-                throw new Error("Fetch readBody failed");
+            if (!body) {
+                throw new Error("login readBody failed");
             }
 
-            // define data
-            const uData: LoginData = {
-                email: String(body.email),
-                username: '',
-                password: String(body.Password)
+            // Define data
+            const uData = {
+                email: body.bemail,
+                password: body.bpassword
             };
-            response.data = uData;
 
-            // create user
+            // Create user
             const loginSuccess = await prisma.users.findFirst({
                 where: {
                     email: uData.email,
                     Password: uData.password
                 }
             });
+
             if (!loginSuccess) {
                 throw new Error("Login unsuccessful");
             }
-
+            
+            // Return
+            response.data = {
+                email: loginSuccess.email,
+                username: loginSuccess.Username
+            }
             response.status = true;
+
             return response;
         }
         catch (error) {
             console.error(error);
-            const fail: LoginResponse = {
-                status: false,
-                data: {
-                    email: '',
-                    username: '',
-                    password: ''
-                }
-            };
-            return fail;
+            return response;
         }
-
     }
-    else if (method === "POST") {
-        try {
-            let body = await readBody(event)
-
-            if (!body || !body.bpassword || !body.bemail) {
-                console.error("top")
-                if (!body.bemail) {
-                    console.error("no body")
-                }
-                return response;
-            }
-
-            const uData: LoginData = {
-                email: String(body.bemail),
-                username: '',
-                password: String(body.bpassword),
-            };
-
-            const loginSuccess = await prisma.users.findFirst({
-                select: {
-                    email: true,
-                    Username: true,
-                    Password: true
-                },
-                where: {
-                    email: uData.email,
-                    Password: uData.password
-                }
-            });
-
-            if (!loginSuccess?.Username) {
-                console.error("Account does not exist");
-                response.status = false;
-                return response;
-            }
-
-            response.data = {
-                email: loginSuccess.email,
-                username: loginSuccess.Username,
-                password: loginSuccess.Password
-            }
-
-            response.status = true;
-            console.log('login.ts: ', response)
-            return response;
-        }
-        catch (error) {
-            response.status = false;
-            console.error("oopsie");
-            return response;
-        }
+    else {
+        console.error("Method must be POST on a createAccount fetch");
+        return response;
     }
 });

@@ -65,7 +65,7 @@ const userStore = useUserStore();
 
 async function onSubmit() {
     state.reviewMsg = '';
-
+    
     const user = userStore.methods.getUser();
     const result = await SubmitReview(user.username, state.ratings, state.reviewContent);
     if (result?.status) {

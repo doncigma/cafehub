@@ -20,32 +20,38 @@ const prisma = PrismaClientSingleton();
 
 export default defineEventHandler(async (event) => {
     const method = event.node.req.method;
+    
+    const response: CafeResponse = {
+        status: false,
+        data: {
+            cafeName: '',
+            averageStars: 0,
+            DrinkOffered: [{
+                drink_name: '',
+                cafe_id: 0
+            }],
+            Rating: [{
+                rating_id: 0,
+                user_id: 0,
+                cafe_id: 0,
+                comment: '',
+                tasteRating: 0,
+                serviceRating: 0,
+                AtmosphereRating: 0
+            }]
+        }
+    }
 
     if (method === "POST") {
-        const response: CafeResponse = {
-            status: false,
-            data: {
-                cafeName: '',
-                averageStars: 0,
-                DrinkOffered: [{
-                    drink_name: '',
-                    cafe_id: 0
-                }],
-                Rating: [{
-                    rating_id: 0,
-                    user_id: 0,
-                    cafe_id: 0,
-                    comment: '',
-                    tasteRating: 0,
-                    serviceRating: 0,
-                    AtmosphereRating: 0
-                }]
-            }
-        };
-
         try {
+            // Retrieve args
             const body = await readBody(event);
-            console.log(body)
+
+            if (!body) {
+                throw new Error("getCafeData readBody failed");
+            }
+            
+            // Fetch data
             const cafeData = await prisma.cafe.findFirst({
                 select: {
                     shop_name: true,
@@ -57,20 +63,21 @@ export default defineEventHandler(async (event) => {
                 where: {
                     shop_name: body.bcafeName
                 }
-            })
-            console.log(cafeData)
+            });
 
             if (!cafeData) {
                 throw new Error('getCafeData query failed');
             }
 
-            response.data.cafeName = cafeData.shop_name;
-            response.data.averageStars = cafeData.average_stars;
-
-            response.data.DrinkOffered = cafeData.DrinkOffered;
-            response.data.Rating = cafeData.Rating;
-
+            // Return
+            response.data = {
+                cafeName: cafeData.shop_name,
+                averageStars: cafeData.average_stars,
+                DrinkOffered: cafeData.DrinkOffered,
+                Rating: cafeData.Rating
+            }
             response.status = true;
+
             return response;
         }
 
@@ -81,26 +88,6 @@ export default defineEventHandler(async (event) => {
     }
     else {
         console.error("Method must be POST on a createAccount fetch")
-        const fail: CafeResponse = {
-            status: false,
-            data: {
-                cafeName: '',
-                averageStars: 0,
-                DrinkOffered: [{
-                    drink_name: '',
-                    cafe_id: 0
-                }],
-                Rating: [{
-                    rating_id: 0,
-                    user_id: 0,
-                    cafe_id: 0,
-                    comment: '',
-                    tasteRating: 0,
-                    serviceRating: 0,
-                    AtmosphereRating: 0
-                }]
-            }
-        };
-        return fail;
+        return response;
     }
 })

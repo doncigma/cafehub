@@ -14,14 +14,7 @@ const state = reactive({
     password: '',
     username: '',
     errorMsg: ''
-})
-
-const validate = (state: any) => {
-    const errors = [];
-    if (!state.email) errors.push({ path: 'email', message: 'Please enter a valid email address.' });
-    if (!state.password) errors.push({ path: 'password', message: 'Password must be at least 8 characters long.' });
-    return errors;
-}
+});
 
 // Update State and Database
 const userStore = useUserStore();
@@ -29,7 +22,7 @@ const router = useRouter();
 
 async function onLogin() {
 
-    const result =  await Login(state.email, state.password);
+    const result = await Login(state.email, state.password);
     console.log(result)
     if (result?.status) {
         userStore.methods.updateUser(result.data.email, result.data.username);
@@ -44,9 +37,7 @@ async function onLogin() {
     }
 }
 
-definePageMeta({
-    layout: "login"
-});
+definePageMeta({ layout: "login" });
 </script>
 
 <template>
@@ -62,7 +53,7 @@ definePageMeta({
             <p class="text-red-700" v-if="state.errorMsg">{{ state.errorMsg }}</p>
 
             <!-- Form -->
-            <UForm :validate="validate" :schema="schema" :state="state" class="space-y-4">
+            <UForm :schema="schema" :state="state" class="space-y-4">
                 <UFormGroup name="email" label="Email">
                     <UInput v-model="state.email" />
                 </UFormGroup>
